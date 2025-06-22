@@ -1,0 +1,38 @@
+.app-footer {
+    width: 100%;
+    background: linear-gradient(90deg, 
+      #0d47a1 0%,    /* Azul oscuro */
+      #b71c1c 18%,   /* Rojo oscuro */
+      #ff8f00 36%,   /* Amarillo oscuro */
+      #1b5e20 54%,   /* Verde oscuro */
+      #4a148c 72%,   /* Violeta oscuro */
+      #00838f 90%    /* Celeste oscuro */
+    );
+    color: #fff;
+    text-align: center;
+    padding: 1.2rem 0 1rem 0;
+    font-size: 1.05rem;
+    letter-spacing: 0.5px;
+    box-shadow: 0 -2px 8px rgba(0,0,0,0.05);
+    position: relative;
+    bottom: 0;
+    font-family: 'Roboto', Arial, Helvetica, sans-serif;
+    overflow: hidden;
+  }
+
+  .app-footer::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(30,30,30,0.25); /* Ajusta la opacidad a tu gusto */
+    z-index: 0;
+  }
+
+  .footer-text-bg, .app-footer span, .app-footer b {
+    position: relative;
+    z-index: 1;
+  }
+
+  .app-footer span, .app-footer b {
+    text-shadow: 2px 2px 8px rgba(30,30,30,0.5), 0 0 2px #1976d2;
+  }

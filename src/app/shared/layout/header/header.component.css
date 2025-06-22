@@ -1,0 +1,182 @@
+.app-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: linear-gradient(90deg, 
+      #0d47a1 0%,    /* Azul oscuro */
+      #b71c1c 18%,   /* Rojo oscuro */
+      #ff8f00 36%,   /* Amarillo oscuro */
+      #1b5e20 54%,   /* Verde oscuro */
+      #4a148c 72%,   /* Violeta oscuro */
+      #00838f 90%    /* Celeste oscuro */
+    );
+    color: #fff;
+    padding: 0 2rem;
+    height: 72px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    overflow: hidden;
+    position: relative;
+    z-index: 10;
+  }
+  
+  .app-header::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(30,30,30,0.18); /* Overlay oscuro */
+    z-index: 0;
+    pointer-events: none;
+  }
+  
+  .app-header > * {
+    position: relative;
+    z-index: 1;
+  }
+  
+  .app-header .logo {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+  }
+  
+  .logo-img {
+    height: 48px;
+    width: auto;
+  }
+  
+  .brand-name {
+    font-size: 2rem;
+    font-weight: bold;
+    letter-spacing: 1px;
+    color: #fff;
+    font-family: 'Roboto', Arial, Helvetica, sans-serif;
+    text-shadow: 2px 2px 8px rgba(30,30,30,0.4), 0 0 2px #1976d2;
+  }
+  
+  .app-header .nav-links {
+    display: flex;
+    gap: 2rem;
+  }
+  
+  .app-header .nav-links a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 1.15rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: color 0.2s, background 0.2s;
+    padding: 0.3rem 0.7rem;
+    border-radius: 4px;
+  }
+  
+  .app-header .nav-links a.active,
+  .app-header .nav-links a:hover {
+    color: #0d47a1;
+    background: rgba(255,255,255,0.18);
+    font-weight: 700;
+  }
+  
+  .app-header .auth-actions {
+    display: flex;
+    gap: 0.7rem;
+  }
+  
+  .app-header .login-btn,
+  .app-header .register-btn {
+    background: #fff;
+    color: #1976d2;
+    border: none;
+    border-radius: 4px;
+    padding: 0.5rem 1.2rem;
+    font-weight: 700;
+    cursor: pointer;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+    box-shadow: 0 1px 4px rgba(30,30,30,0.07);
+  }
+  
+  .app-header .login-btn:hover,
+  .app-header .register-btn:hover {
+    background: #0d47a1;
+    color: #fff;
+    box-shadow: 0 2px 8px rgba(13,71,161,0.15);
+  }
+
+  .carrito-link {
+    position: relative;
+    display: flex;
+    align-items: center;
+    padding-right: 0.7rem; /* Espacio para el badge */
+  }
+  
+  .carrito-badge {
+    position: absolute;
+    top: -7px;
+    right: 0px;
+    background: linear-gradient(135deg, #ff5252 60%, #ff1744 100%);
+    color: #fff;
+    font-size: 0.85rem;
+    font-weight: 700;
+    border-radius: 50%;
+    padding: 0 7px;
+    min-width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 8px rgba(255,82,82,0.18);
+    border: 2px solid #fff;
+    z-index: 2;
+    transition: background 0.2s, transform 0.18s;
+    animation: badge-pop 0.25s;
+  }
+
+  @keyframes badge-pop {
+    0% { transform: scale(0.7);}
+    70% { transform: scale(1.15);}
+    100% { transform: scale(1);}
+  }
+
+  .user-info {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #fff;
+    font-weight: 500;
+    margin-right: 1rem;
+  }
+
+  .user-name {
+    font-weight: 600;
+  }
+
+  .user-role {
+    opacity: 0.8;
+  }
+
+  .logout-btn {
+    background: #fff;
+    color: #d32f2f;
+    border: none;
+    border-radius: 4px;
+    padding: 0.5rem 1.2rem;
+    font-weight: 700;
+    cursor: pointer;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+    box-shadow: 0 1px 4px rgba(30,30,30,0.07);
+  }
+
+  .logout-btn:hover {
+    background: #d32f2f;
+    color: #fff;
+    box-shadow: 0 2px 8px rgba(211,47,47,0.15);
+  }

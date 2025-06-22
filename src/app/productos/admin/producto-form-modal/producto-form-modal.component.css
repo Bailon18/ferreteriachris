@@ -1,0 +1,44 @@
+.modal-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-body {
+  overflow-y: auto;
+  max-height: 400px;
+  padding-bottom: 1rem;
+}
+
+.modal-footer {
+  background: #fff;
+  border-top: 1px solid #eee;
+  padding-top: 1rem;
+}
+
+.form-section-title {
+  font-weight: 600;
+  font-size: 1.08rem;
+  color: #1976d2;
+  margin-bottom: 0.5rem;
+  margin-top: 0.7rem;
+  letter-spacing: 0.5px;
+}
+
+.section-divider {
+  opacity: 0.13;
+  margin: 1.1rem 0 1.2rem 0;
+  border-top: 2px solid #1976d2;
+}
+
+.img-preview img {
+  border: 1.5px solid #e0e0e0;
+  border-radius: 8px;
+  max-width: 100%;
+  max-height: 120px;
+  object-fit: contain;
+  background: #fafafa;
+  margin-top: 0.3rem;
+}
+.img-preview {
+  text-align: center;
+}

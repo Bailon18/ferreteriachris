@@ -1,0 +1,72 @@
+.modal-content {
+  background: #fff;
+  border: none;
+}
+
+.modal-header {
+  padding: 1rem 0;
+}
+
+.modal-title {
+  color: #2c3e50;
+  font-size: 1.5rem;
+}
+
+.table {
+  margin-bottom: 0;
+}
+
+.table th {
+  background: #f8f9fa;
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+.table td {
+  vertical-align: middle;
+}
+
+.btn-group .btn {
+  padding: 0.5rem 1rem;
+  font-weight: 500;
+}
+
+.form-check-input {
+  cursor: pointer;
+}
+
+.form-check-input:checked {
+  background-color: #43a047;
+  border-color: #43a047;
+}
+
+.spinner-border {
+  width: 2.2rem;
+  height: 2.2rem;
+}
+
+/* Estilos para los botones de estado */
+.btn-outline-success:hover {
+  background-color: #43a047;
+  color: white;
+}
+
+.btn-outline-warning:hover {
+  background-color: #ffb300;
+  color: #222;
+}
+
+.btn-outline-info:hover {
+  background-color: #0288d1;
+  color: white;
+}
+
+.btn-outline-secondary:hover {
+  background-color: #757575;
+  color: white;
+}
+
+.btn-outline-danger:hover {
+  background-color: #d32f2f;
+  color: white;
+}

@@ -1,0 +1,86 @@
+<div class="modal fade show d-block" tabindex="-1" style="background: rgba(0,0,0,0.45); z-index: 9999;">
+  <div class="modal-dialog modal-dialog-centered" style="max-width: 600px;">
+    <div class="modal-content p-4" style="border-radius: 18px; box-shadow: 0 8px 32px rgba(30,30,30,0.18);">
+      <div class="modal-header border-0 pb-0">
+        <h4 class="modal-title fw-bold">
+          {{ usuarioId ? 'Editar Usuario' : 'Nuevo Usuario' }}
+        </h4>
+        <button type="button" class="btn-close" aria-label="Close" (click)="cerrarModal()"></button>
+      </div>
+      <hr class="mt-2 mb-4" style="opacity:0.12;">
+      <form [formGroup]="usuarioForm" (ngSubmit)="onSubmitUsuario()" autocomplete="off">
+        <div class="modal-body pt-0">
+          <div class="row">
+            <div class="col-12 col-md-6 mb-3">
+              <label>Nombre</label>
+              <input type="text" class="form-control" formControlName="name" placeholder="Nombre" required>
+              <div *ngIf="usuarioForm.get('name')?.touched && usuarioForm.get('name')?.errors" class="text-danger small">
+                <span *ngIf="usuarioForm.get('name')?.errors?.['required']">El nombre es obligatorio.</span>
+                <span *ngIf="usuarioForm.get('name')?.errors?.['pattern']">Solo letras y espacios, mínimo 2 caracteres.</span>
+              </div>
+            </div>
+            <div class="col-12 col-md-6 mb-3">
+              <label>Apellido</label>
+              <input type="text" class="form-control" formControlName="lastname" placeholder="Apellido" required>
+              <div *ngIf="usuarioForm.get('lastname')?.touched && usuarioForm.get('lastname')?.errors" class="text-danger small">
+                <span *ngIf="usuarioForm.get('lastname')?.errors?.['required']">El apellido es obligatorio.</span>
+                <span *ngIf="usuarioForm.get('lastname')?.errors?.['pattern']">Solo letras y espacios, mínimo 2 caracteres.</span>
+              </div>
+            </div>
+            <div class="col-12 col-md-6 mb-3">
+              <label>Usuario</label>
+              <input type="text" class="form-control" formControlName="username" placeholder="Usuario" required>
+              <div *ngIf="usuarioForm.get('username')?.touched && usuarioForm.get('username')?.errors" class="text-danger small">
+                <span *ngIf="usuarioForm.get('username')?.errors?.['required']">El usuario es obligatorio.</span>
+                <span *ngIf="usuarioForm.get('username')?.errors?.['usernameExiste']">El usuario ya existe.</span>
+              </div>
+            </div>
+            <div class="col-12 col-md-6 mb-3">
+              <label>Email</label>
+              <input type="email" class="form-control" formControlName="email" placeholder="Email" required>
+              <div *ngIf="usuarioForm.get('email')?.touched && usuarioForm.get('email')?.errors" class="text-danger small">
+                <span *ngIf="usuarioForm.get('email')?.errors?.['required']">El email es obligatorio.</span>
+                <span *ngIf="usuarioForm.get('email')?.errors?.['email']">Email inválido.</span>
+                <span *ngIf="usuarioForm.get('email')?.errors?.['correoExiste']">El correo ya está registrado.</span>
+              </div>
+            </div>
+            <div class="col-12 col-md-6 mb-3">
+              <label>DNI</label>
+              <input type="text" class="form-control" formControlName="document" placeholder="DNI" required>
+              <div *ngIf="usuarioForm.get('document')?.touched && usuarioForm.get('document')?.errors" class="text-danger small">
+                <span *ngIf="usuarioForm.get('document')?.errors?.['required']">El DNI es obligatorio.</span>
+                <span *ngIf="usuarioForm.get('document')?.errors?.['pattern']">Debe tener exactamente 8 dígitos numéricos.</span>
+                <span *ngIf="usuarioForm.get('document')?.errors?.['documentoExiste']">El documento ya está registrado.</span>
+              </div>
+            </div>
+            <div class="col-12 col-md-6 mb-3">
+              <label>Contraseña</label>
+              <input type="password" class="form-control" formControlName="password" placeholder="Contraseña" required>
+              <div *ngIf="usuarioForm.get('password')?.touched && usuarioForm.get('password')?.errors" class="text-danger small">
+                <span *ngIf="usuarioForm.get('password')?.errors?.['required']">La contraseña es obligatoria.</span>
+                <span *ngIf="usuarioForm.get('password')?.errors?.['minlength']">Mínimo 6 caracteres.</span>
+              </div>
+            </div>
+            <div class="col-12 col-md-6 mb-3">
+              <label>Roles</label>
+              <select formControlName="roles" class="form-control" multiple required>
+                <option *ngFor="let rol of rolesDisponibles" [value]="rol">{{ rol }}</option>
+              </select>
+              <div *ngIf="usuarioForm.get('roles')?.touched && usuarioForm.get('roles')?.errors" class="text-danger small">
+                <span *ngIf="usuarioForm.get('roles')?.errors?.['required']">Selecciona al menos un rol.</span>
+              </div>
+            </div>
+            <div class="col-12 col-md-6 mb-3 d-flex align-items-center">
+              <input class="form-check-input me-2" type="checkbox" formControlName="isActive" id="isActive">
+              <label class="form-check-label" for="isActive">Activo</label>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="cerrarModal()">Cancelar</button>
+          <button type="submit" class="btn btn-primary" [disabled]="usuarioForm.invalid">Guardar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

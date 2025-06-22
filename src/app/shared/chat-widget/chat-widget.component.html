@@ -1,0 +1,42 @@
+<div class="chat-widget-container">
+  <!-- Chat abierto -->
+  <ng-container *ngIf="isOpen">
+    <div class="chat-header">
+      <i class="fas fa-comments"></i>
+      <span>¿Necesitas ayuda?</span>
+      <button class="close-btn" title="Minimizar" (click)="minimizarChat()">
+        <i class="fas fa-minus"></i>
+      </button>
+    </div>
+    <div class="chat-body">
+      <div class="chat-messages">
+        <div *ngFor="let msg of mensajes" [ngClass]="msg.user ? 'user' : 'bot'">
+          <span>{{ msg.text }}</span>
+        </div>
+        <div *ngIf="esperando" class="bot">
+          <span>Escribiendo...</span>
+        </div>
+      </div>
+      <form class="chat-input" (ngSubmit)="enviarMensaje()">
+        <input
+          type="text"
+          placeholder="Escribe tu mensaje..."
+          autocomplete="off"
+          [(ngModel)]="mensaje"
+          name="mensaje"
+          required
+        />
+        <button type="submit" [disabled]="esperando">
+          <i class="fas fa-paper-plane"></i>
+        </button>
+      </form>
+    </div>
+  </ng-container>
+
+  <!-- Mini-cabecera flotante cuando está minimizado -->
+  <div class="chat-mini-header" *ngIf="!isOpen" (click)="abrirChat()">
+    <i class="fas fa-comments"></i>
+    <span>¿Necesitas ayuda?</span>
+    <i class="fas fa-chevron-up"></i>
+  </div>
+</div>

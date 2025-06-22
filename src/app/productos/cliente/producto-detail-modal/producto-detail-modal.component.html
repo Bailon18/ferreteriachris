@@ -1,0 +1,37 @@
+<mat-dialog-content class="modal-card-content">
+  <div class="row g-0 align-items-center">
+    <!-- Columna izquierda: Imagen, título y precio -->
+    <div class="col-md-5 col-12 d-flex flex-column align-items-center justify-content-center img-col">
+      <h2 class="fw-bold mb-2 text-primary text-center" style="font-size:1.5rem;">{{ producto.nombre }}</h2>
+      <div class="img-bg mb-3 d-flex align-items-center justify-content-center">
+        <img [src]="producto.foto" alt="{{ producto.nombre }}" class="img-fluid product-img-lg" />
+      </div>
+      <div class="detalle-campo mb-2 text-center">
+        <div class="fw-semibold text-success mb-1"><i class="fas fa-dollar-sign me-2"></i>Precio galón:</div>
+        <div class="text-success fw-bold">S/ {{ producto.precioVentaGalon | number:'1.2-2' }}</div>
+      </div>
+      <span class="badge bg-info text-dark mb-2 px-4 py-2 fs-6 shadow-sm" style="font-size:1.05rem;">{{ producto.color }}</span>
+    </div>
+    <!-- Columna derecha: Detalle -->
+    <div class="col-md-7 col-12 p-4 rounded-end modal-details">
+      <div class="detalle-campo mb-3">
+        <div class="fw-semibold text-primary mb-1"><i class="fas fa-industry me-2"></i>Marca:</div>
+        <div class="text-dark">{{ producto.marca.nombre }}</div>
+      </div>
+      <div class="detalle-campo mb-3">
+        <div class="fw-semibold text-primary mb-1"><i class="fas fa-brush me-2"></i>Tipo de pintura:</div>
+        <div class="text-dark">{{ producto.tipoPintura.nombre }}</div>
+      </div>
+      <div class="detalle-campo mb-3">
+        <div class="fw-semibold text-primary mb-1"><i class="fas fa-align-left me-2"></i>Descripción:</div>
+        <div class="text-dark">{{ producto.descripcion }}</div>
+      </div>
+    </div>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end" class="mt-2 modal-actions">
+  <button mat-flat-button color="accent" (click)="agregarAlCarrito(producto)">
+    <i class="fas fa-cart-plus me-1"></i> Agregar
+  </button>
+  <button mat-stroked-button mat-dialog-close color="primary">Cerrar</button>
+</mat-dialog-actions>

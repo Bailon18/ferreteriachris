@@ -1,0 +1,131 @@
+<div class="usuario-list-layout">
+  <h3 class="mb-4">Gestión de Usuarios</h3>
+  
+  <!-- Filtros y búsqueda -->
+  <div class="usuario-filters mb-4">
+    <div class="row align-items-center">
+      <div class="col-md-4">
+        <div class="input-group">
+          <input type="text" 
+                 class="form-control" 
+                 placeholder="Buscar usuario..." 
+                 [(ngModel)]="textoBuscar"
+                 (keyup.enter)="onSearch()">
+          <button class="btn btn-primary" (click)="onSearch()">
+            <i class="fas fa-search"></i>
+          </button>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="btn-group">
+          <button class="btn" 
+                  [class.btn-primary]="estadoFiltro === null"
+                  (click)="onEstadoChange(null)">
+            Todos
+          </button>
+          <button class="btn" 
+                  [class.btn-success]="estadoFiltro === true"
+                  (click)="onEstadoChange(true)">
+            Activos
+          </button>
+          <button class="btn" 
+                  [class.btn-danger]="estadoFiltro === false"
+                  (click)="onEstadoChange(false)">
+            Inactivos
+          </button>
+        </div>
+      </div>
+      <div class="col-md-4 text-end">
+        <button class="btn btn-secondary me-2" 
+                *ngIf="textoBuscar || estadoFiltro !== null" 
+                (click)="limpiarFiltros()">
+          <i class="fas fa-eraser"></i> Limpiar Filtros
+        </button>
+        <button class="btn btn-success" (click)="abrirModalNuevoUsuario()">
+          <i class="fas fa-user-plus"></i> Nuevo Usuario
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tabla de usuarios -->
+    <div class="usuario-table-wrapper">
+    <table class="table table-bordered table-hover usuario-table w-100">
+      <thead class="table-light">
+          <tr>
+            <th>ID</th>
+            <th>DNI</th>
+            <th>Nombre</th>
+            <th>Apellidos</th>
+            <th>Email</th>
+            <th>Rol</th>
+          <th>Estado</th>
+          <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let usuario of usuarios" class="align-middle">
+          <td class="fw-semibold text-primary">{{ usuario.id }}</td>
+          <td>{{ usuario.document }}</td>
+          <td>{{ usuario.name }}</td>
+          <td>{{ usuario.lastname }}</td>
+          <td>{{ usuario.email }}</td>
+          <td>
+            <span class="badge bg-info text-dark px-3 py-2">
+              {{ usuario.roles[0]?.rolName || 'Sin rol' }}
+            </span>
+          </td>
+          <td>
+            <span class="badge" 
+                  [class.bg-success]="usuario.active" 
+                  [class.bg-danger]="!usuario.active">
+              {{ usuario.active ? 'Activo' : 'Inactivo' }}
+            </span>
+            </td>
+          <td>
+            <button class="btn btn-outline-primary btn-sm me-2" title="Editar" (click)="abrirModalEditarUsuario(usuario)">
+              <i class="fas fa-edit"></i>
+            </button>
+            <button class="btn btn-outline-danger btn-sm" 
+                    title="Cambiar estado"
+                    (click)="actualizarEstado(usuario.id, !usuario.active)">
+              <i class="fas" [class.fa-toggle-on]="usuario.active" [class.fa-toggle-off]="!usuario.active"></i>
+            </button>
+            </td>
+          </tr>
+        <tr *ngIf="usuarios.length === 0">
+          <td colspan="8" class="text-center">No hay usuarios para mostrar.</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+  <!-- Paginación -->
+  <nav *ngIf="totalPages > 1">
+    <ul class="pagination justify-content-center mt-3">
+      <li class="page-item" [class.disabled]="pageIndex === 0">
+        <button class="page-link" (click)="onPageChange(pageIndex - 1)" [disabled]="pageIndex === 0">
+          Anterior
+        </button>
+      </li>
+      <li class="page-item" *ngFor="let page of [].constructor(totalPages); let i = index" 
+          [class.active]="i === pageIndex">
+        <button class="page-link" (click)="onPageChange(i)">{{ i + 1 }}</button>
+      </li>
+      <li class="page-item" [class.disabled]="pageIndex >= totalPages - 1">
+        <button class="page-link" (click)="onPageChange(pageIndex + 1)" 
+                [disabled]="pageIndex >= totalPages - 1">
+          Siguiente
+        </button>
+      </li>
+    </ul>
+  </nav>
+
+  <app-usuario-form-modal
+    *ngIf="mostrarModal"
+    [usuarioId]="usuarioAEditarId"
+    (usuarioCreado)="usuarioGuardadoExitoso()"
+    (cerrar)="mostrarModal = false">
+  </app-usuario-form-modal>
+  </div>
+  

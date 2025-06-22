@@ -1,0 +1,174 @@
+<div class="modal fade show d-block" tabindex="-1" style="background: rgba(0,0,0,0.45); z-index: 9999;">
+  <div class="modal-dialog modal-dialog-centered" [ngClass]="{'modal-lg-custom': vista === 'registro'}">
+    <div class="modal-content p-4" style="border-radius: 18px; box-shadow: 0 8px 32px rgba(30,30,30,0.18);">
+      <div class="modal-header border-0 pb-0">
+        <h4 class="modal-title fw-bold d-flex align-items-center" style="font-size: 1.6rem;">
+          <i class="fas fa-sign-in-alt me-2" style="font-size: 1.5rem;" *ngIf="vista === 'login'"></i>
+          <i class="fas fa-user-plus me-2" style="font-size: 1.5rem;" *ngIf="vista === 'registro'"></i>
+          <i class="fas fa-key me-2" style="font-size: 1.5rem;" *ngIf="vista === 'recuperar'"></i>
+          {{ vista === 'login' ? 'Iniciar sesión' : (vista === 'registro' ? 'Registrarse' : 'Recuperar contraseña') }}
+        </h4>
+        <button type="button" class="btn-close" aria-label="Close" (click)="cerrar()"></button>
+      </div>
+      <hr class="mt-2 mb-4" style="opacity:0.12;">
+      <div class="modal-body pt-0">
+
+        <!-- LOGIN -->
+        <form *ngIf="vista === 'login'" [formGroup]="loginForm" (ngSubmit)="onSubmitLogin()" autocomplete="off">
+          <div class="mb-3">
+            <label for="loginUsuario" class="form-label fw-semibold">Usuario</label>
+            <div class="input-group">
+              <span class="input-group-text bg-white">
+                <i class="fas fa-user text-primary"></i>
+              </span>
+              <input type="text"
+                     class="form-control"
+                     id="loginUsuario"
+                     formControlName="correo"
+                     placeholder="Ingresa tu usuario"
+                     required>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="loginPassword" class="form-label fw-semibold">Contraseña</label>
+            <div class="input-group">
+              <span class="input-group-text bg-white">
+                <i class="fas fa-lock text-primary"></i>
+              </span>
+              <input [type]="mostrarPassword ? 'text' : 'password'"
+                     class="form-control"
+                     id="loginPassword"
+                     formControlName="contrasena"
+                     placeholder="Ingresa tu contraseña"
+                     required>
+              <button type="button" class="btn btn-light border-0" tabindex="-1" (click)="mostrarPassword = !mostrarPassword">
+                <i class="fas" [ngClass]="mostrarPassword ? 'fa-eye-slash' : 'fa-eye'"></i>
+              </button>
+            </div>
+          </div>
+          <button type="submit" class="btn btn-gradient-primary w-100 py-2 mt-2 mb-2 fw-bold d-flex align-items-center justify-content-center" style="font-size:1.15rem;"
+                  [disabled]="loginForm.invalid">
+            <i class="fas fa-sign-in-alt me-2"></i>Ingresar
+          </button>
+          <button type="button"
+                  class="btn btn-outline-primary w-100 py-2 mb-2 fw-bold d-flex align-items-center justify-content-center"
+                  (click)="mostrarRegistro()"
+                  style="font-size:1.08rem;">
+            <i class="fas fa-user-plus me-2"></i>Registrarse
+          </button>
+          <div class="text-center">
+            <a href="#" class="link-secondary small recover-link" (click)="$event.preventDefault(); mostrarRecuperar();">
+              <i class="fas fa-key me-1"></i>¿Olvidaste tu contraseña?
+            </a>
+          </div>
+        </form>
+
+        <!-- REGISTRO -->
+        <form *ngIf="vista === 'registro'" [formGroup]="registroForm" (ngSubmit)="onSubmitRegistro()" autocomplete="off">
+          <div class="row">
+            <div class="col-12 col-md-6 mb-3">
+              <label for="registerNombre" class="form-label fw-semibold">Nombre</label>
+              <input type="text" class="form-control" id="registerNombre" formControlName="nombre" placeholder="Ingresa tu nombre" required>
+              <div *ngIf="registroForm.get('nombre')?.touched && registroForm.get('nombre')?.errors" class="text-danger small">
+                <span *ngIf="registroForm.get('nombre')?.errors?.['required']">El nombre es obligatorio.</span>
+                <span *ngIf="registroForm.get('nombre')?.errors?.['pattern']">Solo letras y espacios, mínimo 2 caracteres.</span>
+              </div>
+            </div>
+            <div class="col-12 col-md-6 mb-3">
+              <label for="registerApellido" class="form-label fw-semibold">Apellido</label>
+              <input type="text" class="form-control" id="registerApellido" formControlName="apellido" placeholder="Ingresa tu apellido" required>
+              <div *ngIf="registroForm.get('apellido')?.touched && registroForm.get('apellido')?.errors" class="text-danger small">
+                <span *ngIf="registroForm.get('apellido')?.errors?.['required']">El apellido es obligatorio.</span>
+                <span *ngIf="registroForm.get('apellido')?.errors?.['pattern']">Solo letras y espacios, mínimo 2 caracteres.</span>
+              </div>
+            </div>
+            <div class="col-12 col-md-6 mb-3">
+              <label for="registerCorreo" class="form-label fw-semibold">Correo electrónico</label>
+              <input type="email"
+                     class="form-control"
+                     id="registerCorreo"
+                     formControlName="correo"
+                     (input)="validarCorreo($event)"
+                     required>
+              <div *ngIf="registroForm.get('correo')?.touched && registroForm.get('correo')?.errors" class="text-danger small">
+                <span *ngIf="registroForm.get('correo')?.errors?.['required']">El correo es obligatorio.</span>
+                <span *ngIf="registroForm.get('correo')?.errors?.['email']">Correo inválido.</span>
+                <span *ngIf="registroForm.get('correo')?.errors?.['correoExiste']">El correo ya está registrado.</span>
+              </div>
+            </div>
+            <div class="col-12 col-md-6 mb-3">
+              <label for="registerTelefono" class="form-label fw-semibold">Teléfono</label>
+              <input type="text" class="form-control" id="registerTelefono" formControlName="telefono" placeholder="Ingresa tu teléfono" required>
+              <div *ngIf="registroForm.get('telefono')?.touched && registroForm.get('telefono')?.errors" class="text-danger small">
+                <span *ngIf="registroForm.get('telefono')?.errors?.['required']">El teléfono es obligatorio.</span>
+                <span *ngIf="registroForm.get('telefono')?.errors?.['pattern']">Solo números, mínimo 9 dígitos.</span>
+              </div>
+            </div>
+            <div class="col-12 col-md-6 mb-3">
+              <label for="registerDocumento" class="form-label fw-semibold">Documento de Identidad</label>
+              <input type="text"
+                     class="form-control"
+                     id="registerDocumento"
+                     formControlName="documentoIdentidad"
+                     (input)="validarDocumento($event)"
+                     required>
+              <div *ngIf="registroForm.get('documentoIdentidad')?.touched && registroForm.get('documentoIdentidad')?.errors" class="text-danger small">
+                <span *ngIf="registroForm.get('documentoIdentidad')?.errors?.['required']">El documento es obligatorio.</span>
+                <span *ngIf="registroForm.get('documentoIdentidad')?.errors?.['pattern']">Solo números, exactamente 8 dígitos.</span>
+                <span *ngIf="registroForm.get('documentoIdentidad')?.errors?.['documentoExiste']">El documento ya está registrado.</span>
+              </div>
+            </div>
+            <div class="col-12 col-md-6 mb-3">
+              <label for="registerDireccion" class="form-label fw-semibold">Dirección</label>
+              <input type="text" class="form-control" id="registerDireccion" formControlName="direccion" placeholder="Ingresa tu dirección" required>
+              <div *ngIf="registroForm.get('direccion')?.touched && registroForm.get('direccion')?.errors" class="text-danger small">
+                <span *ngIf="registroForm.get('direccion')?.errors?.['required']">La dirección es obligatoria.</span>
+                <span *ngIf="registroForm.get('direccion')?.errors?.['minlength']">Mínimo 5 caracteres.</span>
+              </div>
+            </div>
+            <div class="col-12 col-md-6 mb-3">
+              <label for="registerPassword" class="form-label fw-semibold">Contraseña</label>
+              <input type="password" class="form-control" id="registerPassword" formControlName="contrasena" placeholder="Crea una contraseña" required>
+              <div *ngIf="registroForm.get('contrasena')?.touched && registroForm.get('contrasena')?.errors" class="text-danger small">
+                <span *ngIf="registroForm.get('contrasena')?.errors?.['required']">La contraseña es obligatoria.</span>
+                <span *ngIf="registroForm.get('contrasena')?.errors?.['minlength']">Mínimo 6 caracteres.</span>
+              </div>
+            </div>
+          </div>
+          <button type="submit"
+                  class="btn btn-gradient-primary w-100 py-2 mt-2 mb-2 fw-bold d-flex align-items-center justify-content-center"
+                  [disabled]="registroForm.invalid">
+            <i class="fas fa-user-plus me-2"></i>Registrarse
+          </button>
+          <div class="text-center">
+            <a href="#" class="link-secondary small recover-link" (click)="$event.preventDefault(); mostrarLogin();">
+              <i class="fas fa-arrow-left me-1"></i>¿Ya tienes cuenta? Inicia sesión
+            </a>
+          </div>
+        </form>
+
+        <!-- RECUPERAR CONTRASEÑA -->
+        <form *ngIf="vista === 'recuperar'" [formGroup]="formularioRecuperar" autocomplete="off" (ngSubmit)="onSubmitRecuperar()">
+          <div class="mb-3">
+            <label for="recoverEmail" class="form-label fw-semibold">Correo electrónico</label>
+            <div class="input-group">
+              <span class="input-group-text bg-white">
+                <i class="fas fa-envelope text-primary"></i>
+              </span>
+              <input type="email" class="form-control" id="recoverEmail" formControlName="email" placeholder="Ingresa tu correo para recuperar" required>
+            </div>
+          </div>
+          <button type="submit" class="btn btn-gradient-primary w-100 py-2 mt-2 mb-2 fw-bold d-flex align-items-center justify-content-center" style="font-size:1.15rem;">
+            <i class="fas fa-key me-2"></i>Recuperar contraseña
+          </button>
+          <div class="text-center">
+            <a href="#" class="link-secondary small recover-link" (click)="$event.preventDefault(); mostrarLogin();">
+              <i class="fas fa-arrow-left me-1"></i>Volver al login
+            </a>
+          </div>
+        </form>
+
+      </div>
+    </div>
+  </div>
+</div>

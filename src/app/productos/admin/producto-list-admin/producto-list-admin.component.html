@@ -1,0 +1,154 @@
+<div class="producto-list-layout">
+  <h3 class="mb-4">Gestión de Productos</h3>
+  
+  <!-- Mensaje warning de stock mínimo -->
+  <div *ngIf="mostrarWarningStockMinimo" class="alert alert-warning d-flex align-items-center justify-content-between mb-3" role="alert">
+    <div>
+      <i class="fas fa-exclamation-triangle me-2"></i>
+      <strong>¡Atención!</strong> Hay <b>{{ stockMinimoCount }}</b> productos con stock mínimo que requieren atención.
+      <small class="d-block text-muted mt-1">Este mensaje permanecerá visible hasta que se actualice el stock de los productos.</small>
+    </div>
+    <button class="btn btn-warning btn-sm" (click)="filtrarStockMinimo()">
+      <i class="fas fa-filter"></i> Ver productos con stock mínimo
+    </button>
+  </div>
+
+  <!-- Botón para quitar filtro de stock mínimo -->
+  <div *ngIf="mostrarSoloStockMinimo" class="mb-3">
+    <button class="btn btn-outline-secondary btn-sm" (click)="quitarFiltroStockMinimo()">
+      <i class="fas fa-times"></i> Quitar filtro de stock mínimo
+    </button>
+  </div>
+
+  <!-- Botón Nuevo Producto arriba, alineado a la derecha -->
+  <div class="row mb-2">
+    <div class="col-12 text-end">
+      <button class="btn btn-success" (click)="abrirModalNuevoProducto()">
+        <i class="fas fa-plus"></i> Nuevo Producto
+      </button>
+    </div>
+  </div>
+  <!-- Filtros y búsqueda -->
+  <div class="producto-filters mb-4">
+    <div class="row align-items-center g-2">
+      <div class="col-md-3">
+        <div class="input-group">
+          <input type="text" 
+                 class="form-control" 
+                 placeholder="Buscar producto por nombre o color" 
+                 [(ngModel)]="textoBuscar"
+                 (keyup.enter)="onSearch()">
+          <button class="btn btn-primary" (click)="onSearch()">
+            <i class="fas fa-search"></i>
+          </button>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <select class="form-select" [(ngModel)]="marcaSeleccionada" (change)="onFiltrar()">
+          <option [ngValue]="null">Todas las marcas</option>
+          <option *ngFor="let marca of marcas" [ngValue]="marca.id">{{ marca.nombre }}</option>
+        </select>
+      </div>
+      <div class="col-md-3">
+        <select class="form-select" [(ngModel)]="tipoSeleccionado" (change)="onFiltrar()">
+          <option [ngValue]="null">Todos los tipos</option>
+          <option *ngFor="let tipo of tiposPintura" [ngValue]="tipo.id">{{ tipo.nombre }}</option>
+        </select>
+      </div>
+      <div class="col-md-3 d-flex align-items-center">
+        <button class="btn btn-outline-secondary w-100" (click)="limpiarFiltros()">
+          <i class="fas fa-eraser"></i> Limpiar
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tabla de productos -->
+  <div class="producto-table-wrapper">
+    <table class="table table-bordered table-hover producto-table w-100">
+      <thead class="table-light">
+        <tr>
+          <th>ID</th>
+          <th>Imagen</th>
+          <th>Nombre</th>
+          <th>Marca</th>
+          <th>Tipo</th>
+          <th>Color</th>
+          <th>Precio Venta</th>
+          <th>Stock</th>
+          <th>Estado</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let producto of productos" 
+            class="align-middle"
+            [ngClass]="{'parpadeo-rojo': producto.stockTotal <= producto.stockMinimo}">
+          <td class="fw-semibold text-primary">{{ producto.id }}</td>
+          <td>
+            <div class="producto-imagen">
+              <img [src]="producto.foto" 
+                   [alt]="producto.nombre"
+                   class="img-thumbnail"
+                   (error)="producto.foto = 'assets/img/no-image.png'">
+            </div>
+          </td>
+          <td>{{ producto.nombre }}</td>
+          <td>{{ producto.marca?.nombre }}</td>
+          <td>{{ producto.tipoPintura?.nombre }}</td>
+          <td>{{ producto.color }}</td>
+          <td class="text-success">S/ {{ producto.precioVentaGalon }}</td>
+          <td>{{ producto.stockTotal }}</td>
+          <td>
+            <span class="badge" 
+                  [class.bg-success]="producto.estaActivo" 
+                  [class.bg-danger]="!producto.estaActivo">
+              {{ producto.estaActivo ? 'Activo' : 'Inactivo' }}
+            </span>
+          </td>
+          <td>
+            <button class="btn btn-outline-primary btn-sm me-2" title="Editar" (click)="abrirModalEditarProducto(producto)">
+              <i class="fas fa-edit"></i>
+            </button>
+            <button class="btn btn-outline-danger btn-sm"
+                    title="{{ producto.estaActivo ? 'Bloquear' : 'Activar' }}"
+                    (click)="cambiarEstadoProducto(producto)">
+              <i class="fas" [class.fa-ban]="producto.estaActivo" [class.fa-check]="!producto.estaActivo"></i>
+            </button>
+          </td>
+        </tr>
+        <tr *ngIf="productos.length === 0">
+          <td colspan="9" class="text-center">No hay productos para mostrar.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Paginación -->
+  <nav *ngIf="totalPages > 1">
+    <ul class="pagination justify-content-center mt-3">
+      <li class="page-item" [class.disabled]="pageIndex === 0">
+        <button class="page-link" (click)="onPageChange(pageIndex - 1)" [disabled]="pageIndex === 0">
+          Anterior
+        </button>
+      </li>
+      <li class="page-item" *ngFor="let page of [].constructor(totalPages); let i = index" 
+          [class.active]="i === pageIndex">
+        <button class="page-link" (click)="onPageChange(i)">{{ i + 1 }}</button>
+      </li>
+      <li class="page-item" [class.disabled]="pageIndex >= totalPages - 1">
+        <button class="page-link" (click)="onPageChange(pageIndex + 1)" 
+                [disabled]="pageIndex >= totalPages - 1">
+          Siguiente
+        </button>
+      </li>
+    </ul>
+  </nav>
+
+  <app-producto-form-modal
+    *ngIf="mostrarModal"
+    [productoId]="productoAEditarId"
+    (productoCreado)="productoGuardadoExitoso()"
+    (cerrar)="mostrarModal = false">
+  </app-producto-form-modal>
+</div>

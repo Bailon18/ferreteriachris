@@ -1,0 +1,47 @@
+<div class="cliente-modal-bg">
+  <div class="cliente-modal-card">
+    <div class="cliente-modal-header">
+      <div class="avatar-section">
+        <div class="avatar-circle">
+          <i class="fas fa-user"></i>
+        </div>
+        <div>
+          <div class="cliente-nombre">{{ cliente?.nombre }} {{ cliente?.apellido }}</div>
+          <div class="cliente-email"><i class="fas fa-envelope"></i> {{ cliente?.correo }}</div>
+        </div>
+      </div>
+      <button class="close-btn" (click)="cerrarModal()" title="Cerrar">&times;</button>
+    </div>
+    <hr>
+    <div *ngIf="!cargando && cliente" class="cliente-modal-body">
+      <div class="cliente-info-row">
+        <span class="label">ID:</span>
+        <span class="value">{{ cliente.id }}</span>
+      </div>
+      <div class="cliente-info-row">
+        <span class="label">DNI:</span>
+        <span class="value">{{ cliente.documentoIdentidad }}</span>
+      </div>
+      <div class="cliente-info-row">
+        <span class="label">Teléfono:</span>
+        <span class="value"><i class="fas fa-phone"></i> {{ cliente.telefono }}</span>
+      </div>
+      <div class="cliente-info-row">
+        <span class="label">Estado:</span>
+        <span class="value">
+          <span class="badge" [class.bg-success]="cliente.estaActivo" [class.bg-danger]="!cliente.estaActivo">
+            {{ cliente.estaActivo ? 'Activo' : 'Inactivo' }}
+          </span>
+        </span>
+      </div>
+      <div class="cliente-info-row">
+        <span class="label">Fecha de registro:</span>
+        <span class="value">{{ cliente.fechaRegistro | date:'dd/MM/yyyy, h:mm a' }}</span>
+      </div>
+    </div>
+    <div class="cliente-modal-body text-center" *ngIf="cargando">
+      <div class="spinner-border text-primary" role="status"></div>
+      <div class="mt-2">Cargando...</div>
+    </div>
+  </div>
+</div>

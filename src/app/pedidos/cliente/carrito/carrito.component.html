@@ -1,0 +1,103 @@
+<div class="carrito-layout container-fluid py-4">
+  <div class="row justify-content-center">
+    <!-- Columna 1: Tabla de productos -->
+    <div class="col-lg-8 col-md-12 mb-4">
+      <div class="card shadow-sm rounded-4 border-0">
+        <div class="card-header bg-primary text-white rounded-top-4 d-flex align-items-center justify-content-between">
+          <h3 class="mb-0 fw-bold"><i class="fas fa-shopping-cart me-2"></i>Mi Carrito</h3>
+          <button class="btn btn-outline-danger btn-sm" (click)="limpiarCarrito()" [disabled]="carrito.length === 0">
+            <i class="fas fa-trash"></i> Vaciar carrito
+          </button>
+        </div>
+        <div class="card-body p-0">
+          <div *ngIf="carrito.length > 0; else carritoVacio">
+            <div class="table-responsive">
+              <table class="table align-middle mb-0 table-hover">
+                <thead class="table-light">
+                  <tr>
+                    <th>Foto</th>
+                    <th>Nombre</th>
+                    <th>Color</th>
+                    <th>Marca</th>
+                    <th>Precio</th>
+                    <th class="text-center">Cantidad</th>
+                    <th>Subtotal</th>
+                    <th>Acción</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of carrito">
+                    <td><img [src]="item.producto.foto" alt="foto" class="img-mini rounded-2 border" style="width:48px;height:48px;object-fit:contain;"></td>
+                    <td class="fw-semibold">{{ item.producto.nombre }}</td>
+                    <td><span class="badge bg-info text-dark">{{ item.producto.color }}</span></td>
+                    <td>{{ item.producto.marca.nombre }}</td>
+                    <td class="fw-bold text-success">S/ {{ item.precioUnitario | number:'1.2-2' }}</td>
+                    <td class="text-center">
+                      <div class="d-flex align-items-center justify-content-center gap-2">
+                        <button class="btn btn-outline-secondary btn-sm px-2" (click)="disminuir(item)" [disabled]="item.cantidad <= 1">
+                          <i class="fas fa-minus"></i>
+                        </button>
+                        <span class="cantidad fw-bold fs-5 mx-2">{{ item.cantidad }}</span>
+                        <button class="btn btn-outline-primary btn-sm px-2" (click)="aumentar(item)" [disabled]="item.cantidad >= item.producto.stockTotal">
+                          <i class="fas fa-plus"></i>
+                        </button>
+                      </div>
+                    </td>
+                    <td class="fw-bold">S/ {{ item.subtotal | number:'1.2-2' }}</td>
+                    <td>
+                      <button (click)="eliminar(item)" class="btn btn-outline-danger btn-sm" title="Eliminar">
+                        <i class="fas fa-trash"></i>
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <ng-template #carritoVacio>
+            <div class="carrito-vacio text-center py-5">
+              <i class="fas fa-shopping-cart fa-3x mb-3 text-muted"></i>
+              <div class="fw-semibold text-muted">Tu carrito está vacío.</div>
+            </div>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+    <!-- Columna 2: Resumen y pago -->
+    <div class="col-lg-4 col-md-8 mx-auto">
+      <div class="card shadow-sm rounded-4 border-0 sticky-top" style="top: 2rem;">
+        <div class="card-header bg-success text-white rounded-top-4">
+          <h4 class="mb-0 fw-bold"><i class="fas fa-receipt me-2"></i>Resumen de compra</h4>
+        </div>
+        <div class="card-body">
+          <div class="mb-3 d-flex justify-content-between align-items-center">
+            <span class="fw-semibold">Fecha y hora:</span>
+            <span class="text-muted">{{ fechaHora | date:'dd/MM/yyyy HH:mm' }}</span>
+          </div>
+          <div class="mb-3 d-flex justify-content-between align-items-center">
+            <span class="fw-semibold">Cliente:</span>
+            <input type="text" [value]="cliente" disabled class="form-control form-control-sm w-auto d-inline-block" style="max-width: 180px;" />
+          </div>
+          <hr>
+          <div class="mb-2 d-flex justify-content-between align-items-center">
+            <span>Subtotal:</span>
+            <span class="fw-bold">S/ {{ subtotal | number:'1.2-2' }}</span>
+          </div>
+          <div class="mb-2 d-flex justify-content-between align-items-center">
+            <span>IGV (18%):</span>
+            <span class="fw-bold">S/ {{ igv | number:'1.2-2' }}</span>
+          </div>
+          <div class="mb-3 d-flex justify-content-between align-items-center fs-5">
+            <span class="fw-bold">Total:</span>
+            <span class="fw-bold text-success total-monto">S/ {{ total | number:'1.2-2' }}</span>
+          </div>
+          <button class="btn btn-success w-100 py-2 fs-5 fw-bold mb-2" 
+                  [disabled]="carrito.length === 0 || !cliente" 
+                  (click)="PagarCompra()">
+            <i class="fas fa-wallet me-2"></i> Pagar con Mercado Pago
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

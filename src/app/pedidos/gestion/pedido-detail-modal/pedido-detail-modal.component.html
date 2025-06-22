@@ -1,0 +1,97 @@
+<div class="modal fade show d-block" tabindex="-1" style="background: rgba(0,0,0,0.45); z-index: 9999;">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content p-4" style="border-radius: 18px; box-shadow: 0 8px 32px rgba(30,30,30,0.18);">
+      <div class="modal-header border-0 pb-0">
+        <h4 class="modal-title fw-bold">
+          Detalle del Pedido #{{ pedido?.id }}
+        </h4>
+        <button type="button" class="btn-close" aria-label="Close" (click)="cerrarModal()"></button>
+      </div>
+      <hr class="mt-2 mb-4" style="opacity:0.12;">
+
+      <div class="modal-body pt-0">
+        <!-- Información del pedido -->
+        <div class="row mb-4">
+          <div class="col-md-6">
+            <p><strong>Cliente:</strong> {{ pedido?.cliente?.nombre }} {{ pedido?.cliente?.apellido }}</p>
+            <p><strong>Vendedor:</strong> {{ pedido?.vendedor?.name }} {{ pedido?.vendedor?.lastname }}</p>
+          </div>
+          <div class="col-md-6">
+            <p><strong>Fecha:</strong> {{ pedido?.fechaPedido | date:'dd/MM/yyyy, h:mm a' }}</p>
+            <p><strong>Total:</strong> S/ {{ pedido?.total | number:'1.2-2' }}</p>
+          </div>
+        </div>
+
+        <!-- Cambio de estado -->
+        <div class="mb-4">
+          <label class="form-label fw-bold">Estado del Pedido</label>
+          <div class="btn-group w-100">
+            <button *ngFor="let estado of estados"
+                    class="btn"
+                    [ngClass]="{
+                      'btn-success': estado === 'ENTREGADO' && pedido?.estado === estado,
+                      'btn-warning': estado === 'PENDIENTE' && pedido?.estado === estado,
+                      'btn-info': estado === 'EN_PROCESO' && pedido?.estado === estado,
+                      'btn-secondary': estado === 'PREPARADO' && pedido?.estado === estado,
+                      'btn-danger': estado === 'CANCELADO' && pedido?.estado === estado,
+                      'btn-outline-success': estado === 'ENTREGADO' && pedido?.estado !== estado,
+                      'btn-outline-warning': estado === 'PENDIENTE' && pedido?.estado !== estado,
+                      'btn-outline-info': estado === 'EN_PROCESO' && pedido?.estado !== estado,
+                      'btn-outline-secondary': estado === 'PREPARADO' && pedido?.estado !== estado,
+                      'btn-outline-danger': estado === 'CANCELADO' && pedido?.estado !== estado
+                    }"
+                    (click)="cambiarEstado(estado)"
+                    [disabled]="!puedeCambiarA(estado)"
+                    [title]="estado === 'PREPARADO' && pedido?.estado === 'EN_PROCESO' && !todosProductosPreparados() ? 'Debes marcar todos los productos como preparados' : ''">
+              {{ estado }}
+            </button>
+          </div>
+        </div>
+
+        <!-- Tabla de detalles -->
+        <div class="table-responsive">
+          <table class="table table-bordered table-hover">
+            <thead class="table-light">
+              <tr>
+                <th>Producto</th>
+                <th>Cantidad</th>
+                <th>Precio Unit.</th>
+                <th>Subtotal</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let detalle of detalles">
+                <td>{{ detalle.producto?.nombre }}</td>
+                <td>{{ detalle.cantidad }}</td>
+                <td>S/ {{ detalle.precioUnitario }}</td>
+                <td>S/ {{ detalle.subtotal }}</td>
+                <td>
+                  <div class="form-check">
+                    <input class="form-check-input" 
+                           type="checkbox" 
+                           [checked]="productosPreparados.has(detalle.id)"
+                           (change)="toggleProductoPreparado(detalle.id)">
+                    <label class="form-check-label">
+                      {{ getLabelCheck() }}
+                    </label>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Loading spinner -->
+        <div *ngIf="cargando" class="text-center py-4">
+          <div class="spinner-border text-primary" role="status"></div>
+          <div class="mt-2">Cargando...</div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="cerrarModal()">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>

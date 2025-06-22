@@ -1,0 +1,16 @@
+<header class="admin-header">
+  <div class="admin-logo">
+    <img src="assets/fondo.png" alt="Logo" class="admin-logo-img" />
+    <span class="admin-brand-name">Matizados Chris <span class="admin-sub">- Administración</span></span>
+  </div>
+  <div class="admin-header-actions">
+    <span class="admin-user-info">
+      <i class="fas fa-user-circle"></i>
+      <span class="user-name">{{userName}}</span>
+      <span class="user-role">| {{userRole}}</span>
+    </span>
+    <button class="admin-logout-btn" (click)="logout()">
+      <i class="fas fa-sign-out-alt"></i> Salir
+    </button>
+  </div>
+</header>

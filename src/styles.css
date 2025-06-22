@@ -1,0 +1,14 @@
+body, html {
+    font-family: 'Roboto', Arial, Helvetica, sans-serif;
+  }
+
+.swal2-container {
+  z-index: 10000 !important;
+}
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.mat-mdc-dialog-container {
+  --mdc-dialog-container-color: #fff !important;
+  background: #fff !important;
+}

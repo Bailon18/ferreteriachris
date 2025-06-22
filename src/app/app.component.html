@@ -1,0 +1,6 @@
+<ng-container *ngIf="esRutaAdmin(); else cliente">
+  <router-outlet></router-outlet>
+</ng-container>
+<ng-template #cliente>
+  <app-main-layout></app-main-layout>
+</ng-template>

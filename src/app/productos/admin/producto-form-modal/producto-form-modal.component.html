@@ -1,0 +1,190 @@
+<div class="modal fade show d-block" tabindex="-1" style="background: rgba(0,0,0,0.45); z-index: 9999;">
+  <div class="modal-dialog modal-dialog-centered" style="max-width: 850px;">
+    <div class="modal-content p-4" style="border-radius: 18px; box-shadow: 0 8px 32px rgba(30,30,30,0.18);">
+      <div class="modal-header border-0 pb-0">
+        <h4 class="modal-title fw-bold">
+          {{ productoId ? 'Editar Producto' : 'Nuevo Producto' }}
+        </h4>
+        <button type="button" class="btn-close" aria-label="Close" (click)="cerrarModal()"></button>
+      </div>
+      <hr class="mt-2 mb-4" style="opacity:0.12;">
+      <form [formGroup]="productoForm" (ngSubmit)="onSubmitProducto()" autocomplete="off">
+        <div class="modal-body pt-0">
+          <!-- DATOS BÁSICOS -->
+          <div class="form-section-title">Datos básicos</div>
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label>Nombre</label>
+              <input type="text" class="form-control" formControlName="nombre" placeholder="Nombre del producto" required>
+              <div *ngIf="productoForm.get('nombre')?.touched && productoForm.get('nombre')?.errors" class="text-danger small">
+                <span *ngIf="productoForm.get('nombre')?.errors?.['required']">El nombre es obligatorio.</span>
+                <span *ngIf="productoForm.get('nombre')?.errors?.['minlength']">Mínimo 2 caracteres.</span>
+              </div>
+              <div *ngIf="productoForm.errors?.['productoDuplicado']" class="text-danger small">
+                {{ getDuplicateErrorMessage() }}
+              </div>
+            </div>
+            <div class="col-md-3 mb-3">
+              <label>Marca</label>
+              <select class="form-control" formControlName="marca" required>
+                <option [ngValue]="null">Seleccione una marca</option>
+                <option *ngFor="let marca of marcas" [ngValue]="marca">{{ marca.nombre }}</option>
+              </select>
+            </div>
+            <div class="col-md-3 mb-3">
+              <label>Tipo de Pintura</label>
+              <select class="form-control" formControlName="tipoPintura" required>
+                <option [ngValue]="null">Seleccione un tipo</option>
+                <option *ngFor="let tipo of tiposPintura" [ngValue]="tipo">{{ tipo.nombre }}</option>
+              </select>
+              <div *ngIf="productoForm.get('tipoPintura')?.touched && productoForm.get('tipoPintura')?.errors" class="text-danger small">
+                <span *ngIf="productoForm.get('tipoPintura')?.errors?.['required']">El tipo es obligatorio.</span>
+              </div>
+            </div>
+            <div class="col-md-4 mb-3">
+              <label>Color</label>
+              <input type="text" class="form-control" formControlName="color" placeholder="Color" required>
+              <div *ngIf="productoForm.get('color')?.touched && productoForm.get('color')?.errors" class="text-danger small">
+                <span *ngIf="productoForm.get('color')?.errors?.['required']">El color es obligatorio.</span>
+              </div>
+            </div>
+            <div class="col-md-8 mb-3">
+              <label>Descripción</label>
+              <textarea class="form-control" formControlName="descripcion" rows="1" placeholder="Descripción"></textarea>
+            </div>
+            <div class="col-md-8 mb-3">
+              <label>Imagen (URL)</label>
+              <div class="input-group">
+                <input type="text" 
+                       class="form-control" 
+                       formControlName="foto" 
+                       placeholder="Pega el link de la imagen"
+                       [class.is-invalid]="imgError || productoForm.get('foto')?.errors">
+                <span class="input-group-text" *ngIf="imgLoading">
+                  <i class="fas fa-spinner fa-spin"></i>
+                </span>
+              </div>
+              <div *ngIf="productoForm.get('foto')?.touched && (productoForm.get('foto')?.errors || imgError)" class="text-danger small">
+                {{ getImageErrorMessage() }}
+              </div>
+              <div *ngIf="imgPreviewUrl" class="img-preview mt-2">
+                <img [src]="imgPreviewUrl"
+                     alt="Vista previa"
+                     style="max-width: 100%; max-height: 120px; border-radius: 8px; border: 1px solid #e0e0e0;">
+              </div>
+            </div>
+          </div>
+          <hr class="section-divider">
+
+          <!-- PRECIOS -->
+          <div class="form-section-title">Precios</div>
+          <div class="row">
+            <div class="col-md-3 mb-3">
+              <label>Precio Compra</label>
+              <input type="number" class="form-control" formControlName="precioCompra" min="0" placeholder="Precio compra">
+              <div *ngIf="productoForm.get('precioCompra')?.touched && productoForm.get('precioCompra')?.errors" class="text-danger small">
+                <span *ngIf="productoForm.get('precioCompra')?.errors?.['required']">El precio de compra es obligatorio.</span>
+                <span *ngIf="productoForm.get('precioCompra')?.errors?.['min']">Debe ser mayor o igual a 0.</span>
+              </div>
+            </div>
+            <div class="col-md-3 mb-3">
+              <label>Precio Venta (Galón)</label>
+              <input type="number" class="form-control" formControlName="precioVentaGalon" min="0" placeholder="Precio galón">
+              <div *ngIf="productoForm.get('precioVentaGalon')?.touched && productoForm.get('precioVentaGalon')?.errors" class="text-danger small">
+                <span *ngIf="productoForm.get('precioVentaGalon')?.errors?.['required']">El precio de venta es obligatorio.</span>
+                <span *ngIf="productoForm.get('precioVentaGalon')?.errors?.['min']">Debe ser mayor o igual a 0.</span>
+              </div>
+            </div>
+            <div class="col-md-3 mb-3">
+              <label>Permite Granel</label>
+              <div>
+                <input type="checkbox" class="form-check-input ms-2" formControlName="permiteGranel">
+                <label class="form-check-label ms-2">Sí</label>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-6 col-md-2 mb-3" *ngFor="let campo of [
+              {label:'Medio Galón', name:'precioMedioGalon'},
+              {label:'Cuarto Galón', name:'precioCuartoGalon'},
+              {label:'Octavo Galón', name:'precioOctavoGalon'},
+              {label:'Dieciseisavo Galón', name:'precioDieciseisavoGalon'},
+              {label:'Treintaidosavo Galón', name:'precioTreintaidosavoGalon'}
+            ]">
+              <label>{{ campo.label }}</label>
+              <input type="number" class="form-control" [formControlName]="campo.name" min="0" [placeholder]="campo.label">
+              <div *ngIf="productoForm.get(campo.name)?.touched && productoForm.get(campo.name)?.errors" class="text-danger small">
+                <span *ngIf="productoForm.get(campo.name)?.errors?.['min']">Debe ser mayor o igual a 0.</span>
+              </div>
+            </div>
+          </div>
+          <hr class="section-divider">
+
+          <!-- STOCK Y UBICACIÓN -->
+          <div class="form-section-title">Stock y ubicación</div>
+          <div class="row">
+            <div class="col-md-3 mb-3">
+              <label>Stock Total</label>
+              <input type="number" class="form-control" formControlName="stockTotal" min="0" placeholder="Stock total">
+              <div *ngIf="productoForm.get('stockTotal')?.touched && productoForm.get('stockTotal')?.errors" class="text-danger small">
+                <span *ngIf="productoForm.get('stockTotal')?.errors?.['required']">El stock total es obligatorio.</span>
+                <span *ngIf="productoForm.get('stockTotal')?.errors?.['min']">Debe ser mayor o igual a 0.</span>
+              </div>
+              <div *ngIf="productoForm.errors?.['stockInvalido']" class="text-danger small">
+                {{ getStockErrorMessage() }}
+              </div>
+            </div>
+            <div class="col-md-3 mb-3">
+              <label>Stock Mínimo</label>
+              <input type="number" class="form-control" formControlName="stockMinimo" min="0" placeholder="Stock mínimo">
+              <div *ngIf="productoForm.get('stockMinimo')?.touched && productoForm.get('stockMinimo')?.errors" class="text-danger small">
+                <span *ngIf="productoForm.get('stockMinimo')?.errors?.['min']">Debe ser mayor o igual a 0.</span>
+              </div>
+              <div *ngIf="productoForm.errors?.['stockInvalido']" class="text-danger small">
+                {{ getStockErrorMessage() }}
+              </div>
+            </div>
+            <div class="col-md-3 mb-3">
+              <label>Cerrados</label>
+              <input type="number" class="form-control" formControlName="cantidadCerrados" min="0" placeholder="Cerrados">
+              <div *ngIf="productoForm.get('cantidadCerrados')?.touched && productoForm.get('cantidadCerrados')?.errors" class="text-danger small">
+                <span *ngIf="productoForm.get('cantidadCerrados')?.errors?.['min']">Debe ser mayor o igual a 0.</span>
+              </div>
+            </div>
+            <div class="col-md-3 mb-3">
+              <label>Abiertos</label>
+              <input type="number" class="form-control" formControlName="cantidadAbiertos" min="0" placeholder="Abiertos">
+              <div *ngIf="productoForm.get('cantidadAbiertos')?.touched && productoForm.get('cantidadAbiertos')?.errors" class="text-danger small">
+                <span *ngIf="productoForm.get('cantidadAbiertos')?.errors?.['min']">Debe ser mayor o igual a 0.</span>
+              </div>
+            </div>
+            <div class="col-md-4 mb-3">
+              <label>Estante</label>
+              <input type="text" class="form-control" formControlName="estante" placeholder="Estante(Opcional)">
+            </div>
+            <div class="col-md-4 mb-3">
+              <label>Fila</label>
+              <input type="text" class="form-control" formControlName="fila" placeholder="Fila(Opcional)">
+            </div>
+            <div class="col-md-4 mb-3">
+              <label>Área</label>
+              <input type="text" class="form-control" formControlName="area" placeholder="Área(Opcional)">
+            </div>
+          </div>
+          <hr class="section-divider">
+
+          <!-- ESTADO -->
+          <div class="form-section-title">Estado</div>
+          <div class="mb-3 d-flex align-items-center">
+            <input class="form-check-input me-2" type="checkbox" formControlName="estaActivo" id="estaActivo">
+            <label class="form-check-label" for="estaActivo">Activo</label>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="cerrarModal()">Cancelar</button>
+          <button type="submit" class="btn btn-primary" [disabled]="productoForm.invalid">Guardar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

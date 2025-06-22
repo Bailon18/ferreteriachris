@@ -1,0 +1,54 @@
+.pedido-modal-content {
+  min-width: 320px;
+  max-width: 100%;
+  width: 100%;
+  padding: 1.5rem 1rem 1rem 1rem;
+  background: transparent;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.pedido-detalle-table {
+  width: 100%;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px #0001;
+  margin-bottom: 0;
+  font-size: 1.08rem;
+}
+
+.pedido-detalle-table th, .pedido-detalle-table td {
+  text-align: center;
+  vertical-align: middle;
+  padding: 0.8rem 0.5rem;
+}
+
+.pedido-detalle-table th {
+  background: #f5f5f5;
+  font-weight: 600;
+  border-top: none;
+}
+
+.pedido-detalle-table tr {
+  transition: background 0.15s;
+}
+
+.pedido-detalle-table tr:hover {
+  background: #f0f8ff;
+}
+
+.modal-title {
+  font-size: 1.35rem;
+  letter-spacing: 0.5px;
+}
+
+@media (max-width: 600px) {
+  .pedido-modal-content {
+    min-width: 0;
+    padding: 0.7rem 0.2rem 0.5rem 0.2rem;
+  }
+  .pedido-detalle-table th, .pedido-detalle-table td {
+    padding: 0.5rem 0.2rem;
+    font-size: 0.97rem;
+  }
+}

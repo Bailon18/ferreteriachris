@@ -1,0 +1,8 @@
+
+
+iframe {
+  /* Hacemos que el iframe llene completamente el espacio del componente host */
+  width: 100%;
+  height: 100%;
+  border: none;
+}

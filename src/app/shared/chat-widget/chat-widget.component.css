@@ -1,0 +1,224 @@
+.chat-widget-container {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  z-index: 9999;
+  width: 340px;
+  max-width: 95vw;
+  font-family: 'Roboto', Arial, sans-serif;
+  box-shadow: 0 8px 32px rgba(30,30,30,0.18);
+  border-radius: 18px;
+  background: #fff;
+  overflow: hidden;
+  transition: box-shadow 0.2s, transform 0.2s;
+}
+
+.chat-header {
+  background: linear-gradient(90deg, #1976d2 0%, #43a047 100%);
+  color: #fff;
+  padding: 0.9rem 1.2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  font-weight: 700;
+  font-size: 1.1rem;
+  cursor: pointer;
+  position: relative;
+  border-top-left-radius: 18px;
+  border-top-right-radius: 18px;
+  user-select: none;
+}
+
+.chat-header i {
+  font-size: 1.3rem;
+}
+
+.close-btn {
+  background: transparent;
+  border: none;
+  color: #fff;
+  font-size: 1.1rem;
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  transition: color 0.18s;
+}
+.close-btn:hover {
+  color: #ff5252;
+}
+
+.chat-body {
+  background: #f8fafc;
+  padding: 0.7rem 0.9rem 0.9rem 0.9rem;
+  display: flex;
+  flex-direction: column;
+  min-height: 320px;
+  max-height: 420px;
+  overflow: hidden;
+}
+
+.chat-messages {
+  flex: 1;
+  overflow-y: auto;
+  margin-bottom: 0.7rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.chat-messages .user {
+  align-self: flex-end;
+  background: #1976d2;
+  color: #fff;
+  border-radius: 12px 12px 2px 12px;
+  padding: 0.5rem 1rem;
+  max-width: 80%;
+  font-size: 1rem;
+  box-shadow: 0 1px 4px rgba(25,118,210,0.08);
+}
+
+.chat-messages .bot {
+  align-self: flex-start;
+  background: #e3e3e3;
+  color: #222;
+  border-radius: 12px 12px 12px 2px;
+  padding: 0.5rem 1rem;
+  max-width: 80%;
+  font-size: 1rem;
+  box-shadow: 0 1px 4px rgba(30,30,30,0.06);
+}
+
+.chat-input {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.chat-input input {
+  flex: 1;
+  border: 1.5px solid #1976d2;
+  border-radius: 8px;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  outline: none;
+  background: #fff;
+  transition: border 0.2s;
+}
+
+.chat-input input:focus {
+  border-color: #43a047;
+}
+
+.chat-input button {
+  background: #1976d2;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.5rem 0.9rem;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: background 0.18s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.chat-input button:hover {
+  background: #43a047;
+}
+
+.chat-fab {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  background: #1976d2;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 58px;
+  height: 58px;
+  font-size: 2rem;
+  box-shadow: 0 4px 16px rgba(25,118,210,0.18);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+  transition: background 0.18s, box-shadow 0.18s;
+  outline: none;
+}
+.chat-fab:hover {
+  background: #43a047;
+  box-shadow: 0 8px 32px rgba(67,160,71,0.18);
+}
+
+@media (max-width: 600px) {
+  .chat-widget-container {
+    width: 98vw;
+    right: 1vw;
+    bottom: 1vw;
+    border-radius: 12px;
+  }
+  .chat-header, .chat-body {
+    border-radius: 0;
+  }
+}
+
+.chat-widget-container.minimized .chat-header,
+.chat-widget-container.minimized .chat-body {
+  display: none;
+}
+.chat-widget-container.minimized .chat-fab {
+  display: flex;
+}
+.chat-widget-container .chat-fab {
+  display: none;
+}
+.chat-widget-container.open .chat-fab {
+  display: none;
+}
+
+.chat-mini-header {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  background: linear-gradient(90deg, #1976d2 0%, #43a047 100%);
+  color: #fff;
+  border-radius: 18px;
+  box-shadow: 0 4px 16px rgba(30,30,30,0.18);
+  padding: 0.9rem 1.2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  font-weight: 700;
+  font-size: 1.1rem;
+  cursor: pointer;
+  z-index: 9999;
+  min-width: 220px;
+  max-width: 340px;
+  transition: box-shadow 0.2s, background 0.2s;
+  user-select: none;
+}
+
+.chat-mini-header i.fas.fa-comments {
+  font-size: 1.3rem;
+}
+
+.chat-mini-header i.fas.fa-chevron-up {
+  margin-left: auto;
+  font-size: 1.1rem;
+}
+
+@media (max-width: 600px) {
+  .chat-mini-header {
+    width: 98vw;
+    right: 1vw;
+    bottom: 1vw;
+    border-radius: 12px;
+    min-width: unset;
+    max-width: unset;
+    font-size: 1rem;
+    padding: 0.7rem 1rem;
+  }
+}

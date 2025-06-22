@@ -1,0 +1,129 @@
+.usuario-list-container {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 4px 24px rgba(30,30,30,0.10);
+  padding: 2.2rem 2.5rem 2rem 2.5rem;
+  margin: 2.5rem auto;
+  max-width: 1400px;
+}
+
+.usuario-list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  gap: 1.2rem;
+}
+
+.usuario-search {
+  flex: 1 1 300px;
+  padding: 0.7rem 1.2rem;
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+  font-size: 1.08rem;
+  outline: none;
+  transition: border 0.18s;
+}
+.usuario-search:focus {
+  border: 1.5px solid #1976d2;
+}
+
+.usuario-add-btn {
+  background: linear-gradient(90deg, #0d47a1 0%, #b71c1c 50%, #ff8f00 100%);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.7rem 1.5rem;
+  font-size: 1.08rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(30,30,30,0.08);
+  transition: background 0.18s, box-shadow 0.18s;
+}
+.usuario-add-btn:hover {
+  background: linear-gradient(90deg, #1976d2 0%, #b71c1c 60%, #ff8f00 100%);
+  box-shadow: 0 4px 16px rgba(30,30,30,0.13);
+}
+
+.usuario-table-wrapper {
+  overflow-x: auto;
+}
+
+.usuario-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(30,30,30,0.07);
+  overflow: hidden;
+}
+
+.usuario-table thead tr {
+  background: linear-gradient(90deg, #0d47a1 0%, #b71c1c 50%, #ff8f00 100%);
+  color: #fff;
+}
+
+.usuario-table th, .usuario-table td {
+  padding: 0.85rem 1.1rem;
+  text-align: left;
+  font-size: 1.05rem;
+}
+
+.usuario-table th {
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  border-bottom: 2.5px solid #e0e0e0;
+}
+
+.usuario-table tbody tr {
+  transition: background 0.15s;
+}
+.usuario-table tbody tr:hover {
+  background: #f5f7fa;
+}
+
+.usuario-action-btn {
+  background: #f5f7fa;
+  border: none;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.15rem;
+  margin-right: 0.3rem;
+  color: #1976d2;
+  cursor: pointer;
+  transition: background 0.18s, color 0.18s, box-shadow 0.18s;
+}
+.usuario-action-btn.edit:hover {
+  background: #e3f2fd;
+  color: #0d47a1;
+}
+.usuario-action-btn.delete {
+  color: #d32f2f;
+}
+.usuario-action-btn.delete:hover {
+  background: #ffebee;
+  color: #b71c1c;
+}
+
+@media (max-width: 700px) {
+  .usuario-list-container {
+    padding: 1.2rem 0.5rem;
+  }
+  .usuario-list-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.7rem;
+  }
+  .usuario-add-btn {
+    width: 100%;
+    justify-content: center;
+  }
+}

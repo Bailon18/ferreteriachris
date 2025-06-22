@@ -1,0 +1,41 @@
+<header class="app-header">
+    <div class="logo">
+      <img src="assets/fondo.png" alt="Logo" class="logo-img" />
+      <span class="brand-name">Matizados Chris</span>
+    </div>
+    <nav class="nav-links">
+      <a routerLink="/productos" routerLinkActive="active">
+        <i class="fas fa-paint-roller"></i> Productos
+      </a>
+      <a *ngIf="isLoggedIn" routerLink="/pedidos/pedidos" routerLinkActive="active">
+        <i class="fas fa-list"></i> Mis Pedidos
+      </a>
+      <a routerLink="/pedidos/carrito" routerLinkActive="active" class="carrito-link">
+        <i class="fas fa-shopping-cart"></i> Carrito
+        <span class="carrito-badge" *ngIf="carritoCantidad > 0">{{ carritoCantidad }}</span>
+      </a>
+    </nav>
+    <div class="auth-actions">
+      <!-- Mostrar información del usuario si está logueado -->
+      <div class="user-info" *ngIf="isLoggedIn">
+        <span class="user-name">{{userName}}</span>
+        <span class="user-role">| {{userRole}}</span>
+      </div>
+      
+      <!-- Botón de login/registro si no está logueado -->
+      <button class="login-btn" *ngIf="!isLoggedIn" (click)="abrirLoginModal()">
+        Iniciar sesión
+      </button>
+      
+      <!-- Botón de logout si está logueado -->
+      <button class="logout-btn" *ngIf="isLoggedIn" (click)="logout()">
+        <i class="fas fa-sign-out-alt"></i> Cerrar sesión
+      </button>
+    </div>
+  </header>
+  <app-auth-modal
+    *ngIf="mostrarLoginModal"
+    (close)="cerrarLoginModal()"
+    (alerta)="mostrarAlertaPersonalizada($event.mensaje, $event.titulo, $event.icono)"
+    (registroExitoso)="abrirLoginModal()">
+  </app-auth-modal>
