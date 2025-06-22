@@ -44,7 +44,8 @@ export class CarritoComponent implements OnInit {
     }
   }
 
-  onPagar() {
+  iniciarProcesoDePago() {
+    // 1. Validar si el usuario está logueado
     if (!this.tokenService.isLogged()) {
       swall.fire({
         icon: 'warning',
@@ -66,6 +67,7 @@ export class CarritoComponent implements OnInit {
       return;
     }
 
+    // 2. Si está logueado, preparamos el pedido PERO NO LO GUARDAMOS AÚN
     const clienteId = this.tokenService.getIdUser() || 0;
     const pedido: Pedido = {
       cliente: { id: clienteId },
@@ -74,8 +76,8 @@ export class CarritoComponent implements OnInit {
       subtotal: this.subtotal,
       igv: this.igv,
       total: this.total,
-      estado: 'PENDIENTE',
-      observaciones: 'Pedido realizado desde la web'
+      estado: 'PENDIENTE', // El estado final se actualizará después del pago
+      observaciones: 'Pedido pendiente de pago en Mercado Pago.'
     };
 
     const detalles: PedidoDetalle[] = this.carrito.map(item => ({
@@ -87,27 +89,32 @@ export class CarritoComponent implements OnInit {
 
     const pedidoRequest: PedidoRequest = { pedido, detalles };
 
-    this.pedidoService.crearPedidoConDetalles(pedidoRequest).subscribe({
-      next: (resp) => {
-        swall.fire({
-          icon: 'success',
-          title: '¡Gracias! Su compra fue realizada con éxito.',
-          text: 'Puede visualizar el estado de sus pedidos en el menú "Mis Pedidos".',
-          confirmButtonText: 'Aceptar',
-          allowOutsideClick: false
-        }).then(() => {
-          this.carritoService.limpiarCarrito();
-          this.cargarCarrito();
-          this.fechaHora = new Date();
-        });
+    // 3. Guardamos el pedido pendiente en sessionStorage para recuperarlo después del pago
+    sessionStorage.setItem('pedidoPendiente', JSON.stringify(pedidoRequest));
+
+    // 4. Creamos la preferencia de pago en Mercado Pago
+    this.mercadoPagoService.crearPreferencia({
+      items: [
+        {
+          title: 'Compra en Ferretería ' + new Date().getTime(),
+          unit_price: this.total,
+          quantity: 1
+        }
+      ]
+    }).subscribe({
+      next: (resp: any) => {
+        // 5. Redirigimos al usuario a la página de pago
+        window.location.href = resp.init_point;
       },
       error: (err) => {
         swall.fire({
           icon: 'error',
-          title: 'Error',
-          text: 'No se pudo registrar el pedido. Intente nuevamente.',
+          title: 'Error de comunicación',
+          text: 'No se pudo contactar a Mercado Pago. Intente nuevamente.',
           confirmButtonText: 'Aceptar'
         });
+        // Limpiamos el pedido pendiente si falla la comunicación
+        sessionStorage.removeItem('pedidoPendiente');
       }
     });
   }
@@ -161,23 +168,7 @@ export class CarritoComponent implements OnInit {
     this.fechaHora = new Date();
   }
 
-  pagarConMercadoPago() {
-    this.mercadoPagoService.crearPreferencia({
-      items: [
-        {
-          title: 'Compra en Ferretería',
-          unit_price: this.total,
-          quantity: 1
-        }
-      ]
-    }).subscribe((resp: any) => {
-      console.log("resp",   resp);
-      window.location.href = resp.init_point;
-    });
-  }
-
   PagarCompra(){
-    //this.onPagar();
-    this.pagarConMercadoPago();
+    this.iniciarProcesoDePago();
   }
 }
