@@ -90,9 +90,11 @@ export class CarritoComponent implements OnInit {
     const pedidoRequest: PedidoRequest = { pedido, detalles };
 
     // 3. Guardamos el pedido pendiente en sessionStorage para recuperarlo después del pago
+    console.log('Guardando pedido pendiente en sessionStorage:', pedidoRequest);
     sessionStorage.setItem('pedidoPendiente', JSON.stringify(pedidoRequest));
 
     // 4. Creamos la preferencia de pago en Mercado Pago
+    console.log('Creando preferencia de pago en Mercado Pago...');
     this.mercadoPagoService.crearPreferencia({
       items: [
         {
@@ -104,9 +106,11 @@ export class CarritoComponent implements OnInit {
     }).subscribe({
       next: (resp: any) => {
         // 5. Redirigimos al usuario a la página de pago
+        console.log('Preferencia creada. Redirigiendo a:', resp.init_point);
         window.location.href = resp.init_point;
       },
       error: (err) => {
+        console.error('Error al crear la preferencia de pago:', err);
         swall.fire({
           icon: 'error',
           title: 'Error de comunicación',
@@ -114,6 +118,7 @@ export class CarritoComponent implements OnInit {
           confirmButtonText: 'Aceptar'
         });
         // Limpiamos el pedido pendiente si falla la comunicación
+        console.log('Limpiando pedido pendiente de sessionStorage debido a un error.');
         sessionStorage.removeItem('pedidoPendiente');
       }
     });
