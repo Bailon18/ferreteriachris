@@ -168,7 +168,7 @@ export class ProductoListClienteComponent implements OnInit, OnDestroy {
           const pedidoRequest: PedidoRequest = JSON.parse(pedidoPendienteString);
 
           // Actualizamos el estado del pedido a 'PAGADO'
-          pedidoRequest.pedido.estado = 'PAGADO';
+          pedidoRequest.pedido.estado = 'PENDIENTE';
           pedidoRequest.pedido.observaciones = `Pago aprobado mediante Mercado Pago. ID de pago: ${paymentId}`;
           console.log('Pedido actualizado, listo para enviar al backend:', pedidoRequest);
 
