@@ -5,9 +5,6 @@ import { MatDialog } from '@angular/material/dialog';
 import { ProductoDetailModalComponent } from '../producto-detail-modal/producto-detail-modal.component';
 import { CarritoService } from 'src/app/core/services/carrito.service';
 import swall from 'sweetalert2';
-import { ActivatedRoute, Router } from '@angular/router';
-import { PedidoService } from 'src/app/core/services/Pedido.service';
-import { PedidoRequest } from 'src/app/modals/PedidoRequest.model';
 
 @Component({
   selector: 'app-producto-list-cliente',
@@ -32,15 +29,11 @@ export class ProductoListClienteComponent implements OnInit, OnDestroy {
   constructor(
     private productosService: ProductosService,
     private dialog: MatDialog,
-    private carritoService: CarritoService,
-    private route: ActivatedRoute,
-    private router: Router,
-    private pedidoService: PedidoService
+    private carritoService: CarritoService
   ) {}
 
   ngOnInit() {
     this.cargarProductos();
-    this.verificarEstadoPago();
 
     // Refresca productos cada 20 segundos
     this.refreshInterval = setInterval(() => {
@@ -149,83 +142,6 @@ export class ProductoListClienteComponent implements OnInit, OnDestroy {
     this.dialog.open(ProductoDetailModalComponent, {
       width: '460px',
       data: producto
-    });
-  }
-
-  verificarEstadoPago() {
-    console.log('Verificando estado de pago de Mercado Pago...');
-    this.route.queryParams.subscribe(params => {
-      const status = params['status'];
-      const paymentId = params['payment_id'];
-      console.log('Parámetros de URL recibidos:', params);
-
-      if (status === 'approved' && paymentId) {
-        console.log('Pago aprobado. Procesando el pedido pendiente...');
-        const pedidoPendienteString = sessionStorage.getItem('pedidoPendiente');
-
-        if (pedidoPendienteString) {
-          console.log('Se encontró un pedido pendiente en sessionStorage.');
-          const pedidoRequest: PedidoRequest = JSON.parse(pedidoPendienteString);
-
-          // Actualizamos el estado del pedido a 'PAGADO'
-          pedidoRequest.pedido.estado = 'PENDIENTE';
-          pedidoRequest.pedido.observaciones = `Pago aprobado mediante Mercado Pago. ID de pago: ${paymentId}`;
-          console.log('Pedido actualizado, listo para enviar al backend:', pedidoRequest);
-
-          // Guardamos el pedido final en la base de datos
-          this.pedidoService.crearPedidoConDetalles(pedidoRequest).subscribe({
-            next: (pedidoGuardado) => {
-              console.log('Pedido guardado exitosamente en el backend:', pedidoGuardado);
-              swall.fire(
-                '¡Pago Exitoso!',
-                'Tu compra ha sido procesada y registrada correctamente.',
-                'success'
-              );
-              // Limpiamos todo para evitar duplicados
-              console.log('Limpiando el carrito y el sessionStorage.');
-              sessionStorage.removeItem('pedidoPendiente');
-              this.carritoService.limpiarCarrito();
-
-              // Limpiamos los parámetros de la URL para que no se reprocese al recargar
-              this.router.navigate([], {
-                relativeTo: this.route,
-                queryParams: {},
-                replaceUrl: true
-              });
-            },
-            error: (err) => {
-              console.error('Error al guardar el pedido en el backend:', err);
-              swall.fire(
-                'Error Crítico',
-                'Tu pago fue aprobado pero hubo un error al registrar tu pedido. Por favor, contacta a soporte con el ID de pago: ' + paymentId,
-                'error'
-              );
-              // Aunque hubo un error, es mejor limpiar el session storage para no intentar de nuevo con datos viejos.
-              sessionStorage.removeItem('pedidoPendiente');
-            }
-          });
-        } else {
-            console.warn('Pago aprobado, pero no se encontró ningún pedido pendiente en sessionStorage. El usuario podría haber limpiado la caché o recargado la página indebidamente.');
-        }
-      } else if (status) {
-        // Manejar otros estados (pending, failure, etc.)
-        console.warn(`El pago no fue aprobado. Estado: ${status}.`);
-        swall.fire(
-            'Pago no completado',
-            `El estado de tu pago es: '${status}'. Si ya pagaste, puede que esté pendiente de aprobación. Si no, puedes intentarlo de nuevo desde el carrito.`,
-            'warning'
-          );
-        // Limpiamos el pedido de sessionStorage para evitar procesar un pedido fallido
-        sessionStorage.removeItem('pedidoPendiente');
-        // Limpiamos la URL
-        this.router.navigate([], {
-          relativeTo: this.route,
-          queryParams: {},
-          replaceUrl: true
-        });
-      } else {
-        console.log('No se encontraron parámetros de estado de pago en la URL. Flujo normal.');
-      }
     });
   }
 }
