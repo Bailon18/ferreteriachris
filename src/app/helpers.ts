@@ -1,2 +1,2 @@
-let baseUrl = 'https://mysql-production-ad21.up.railway.app';
+let baseUrl = 'https://ferreteria-app-production.up.railway.app';
 export default baseUrl;
