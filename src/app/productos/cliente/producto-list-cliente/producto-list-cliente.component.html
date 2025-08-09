@@ -1,67 +1,102 @@
 <div class="productos-layout container-fluid px-0">
-  <div class="row g-4">
+  <div class="row g-3 g-md-4">
     <!-- Filtros: columna izquierda en desktop, arriba en móvil -->
-    <div class="col-lg-3 col-md-4 col-12 mb-3">
+    <div class="col-12 col-md-4 col-lg-3 mb-3 mb-md-0">
       <div class="filtros-col card shadow-sm p-3 mb-4 bg-white rounded-4">
-        <h4 class="fw-bold mb-3 text-primary d-flex align-items-center gap-2">
-          <i class="fas fa-filter"></i> Filtrar productos
-        </h4>
-        <hr class="filtro-separador" />
-        <!-- Marca -->
-        <div class="filtro-group mb-3">
-          <label for="marca" class="fw-semibold"><i class="fas fa-industry me-1"></i>Marca</label>
-          <select id="marca" class="form-select limited-dropdown" [(ngModel)]="marcaSeleccionada" (change)="filtrarProductos()">
-            <option value="">Todas</option>
-            <option *ngFor="let marca of marcas" [value]="marca.id">{{ marca.nombre }}</option>
-          </select>
+        <!-- Botón toggle para móvil -->
+        <div class="d-md-none mb-3">
+          <button class="btn btn-outline-primary w-100" type="button" data-bs-toggle="collapse" data-bs-target="#filtrosCollapse" aria-expanded="false" aria-controls="filtrosCollapse">
+            <i class="fas fa-filter me-2"></i>
+            <span class="d-inline d-sm-none">Filtros</span>
+            <span class="d-none d-sm-inline">Filtrar productos</span>
+            <i class="fas fa-chevron-down ms-auto"></i>
+          </button>
         </div>
-        <hr class="filtro-separador" />
-        <!-- Tipo de pintura -->
-        <div class="filtro-group mb-3">
-          <label for="tipo" class="fw-semibold"><i class="fas fa-brush me-1"></i>Tipo de pintura</label>
-          <select id="tipo" class="form-select" [(ngModel)]="tipoSeleccionado" (change)="filtrarProductos()">
-            <option value="">Todos</option>
-            <option *ngFor="let tipo of tiposPintura" [value]="tipo.id">{{ tipo.nombre }}</option>
-          </select>
-        </div>
-        <hr class="filtro-separador" />
-        <!-- Color -->
-        <div class="filtro-group mb-3">
-          <label for="color" class="fw-semibold"><i class="fas fa-palette me-1"></i>Color</label>
-          <select id="color" class="form-select" [(ngModel)]="colorSeleccionado" (change)="filtrarProductos()">
-            <option value="">Todos</option>
-            <option *ngFor="let color of coloresUnicos" [value]="color">{{ color }}</option>
-          </select>
-        </div>
-        <hr class="filtro-separador" />
-        <!-- Precio mínimo y máximo -->
-        <div class="filtro-group mb-3">
-          <label class="fw-semibold"><i class="fas fa-dollar-sign me-1"></i>Precio (S/)</label>
-          <div class="d-flex gap-2">
-            <input type="number" class="form-control" placeholder="Mín" [(ngModel)]="precioMin" (input)="filtrarProductos()" />
-            <input type="number" class="form-control" placeholder="Máx" [(ngModel)]="precioMax" (input)="filtrarProductos()" />
+        
+        <!-- Contenido de filtros -->
+        <div class="collapse d-md-block" id="filtrosCollapse">
+          <h4 class="fw-bold mb-3 text-primary d-flex align-items-center gap-2 d-none d-md-flex">
+            <i class="fas fa-filter"></i> Filtrar productos
+          </h4>
+          <hr class="filtro-separador d-none d-md-block" />
+          
+          <!-- Marca -->
+          <div class="filtro-group mb-3">
+            <label for="marca" class="fw-semibold"><i class="fas fa-industry me-1"></i>Marca</label>
+            <select id="marca" class="form-select limited-dropdown" [(ngModel)]="marcaSeleccionada" (change)="filtrarProductos()">
+              <option value="">Todas</option>
+              <option *ngFor="let marca of marcas" [value]="marca.id">{{ marca.nombre }}</option>
+            </select>
           </div>
+          <hr class="filtro-separador" />
+          
+          <!-- Tipo de pintura -->
+          <div class="filtro-group mb-3">
+            <label for="tipo" class="fw-semibold"><i class="fas fa-brush me-1"></i>Tipo de pintura</label>
+            <select id="tipo" class="form-select" [(ngModel)]="tipoSeleccionado" (change)="filtrarProductos()">
+              <option value="">Todos</option>
+              <option *ngFor="let tipo of tiposPintura" [value]="tipo.id">{{ tipo.nombre }}</option>
+            </select>
+          </div>
+          <hr class="filtro-separador" />
+          
+          <!-- Color -->
+          <div class="filtro-group mb-3">
+            <label for="color" class="fw-semibold"><i class="fas fa-palette me-1"></i>Color</label>
+            <select id="color" class="form-select" [(ngModel)]="colorSeleccionado" (change)="filtrarProductos()">
+              <option value="">Todos</option>
+              <option *ngFor="let color of coloresUnicos" [value]="color">{{ color }}</option>
+            </select>
+          </div>
+          <hr class="filtro-separador" />
+          
+          <!-- Precio mínimo y máximo -->
+          <div class="filtro-group mb-3">
+            <label class="fw-semibold"><i class="fas fa-dollar-sign me-1"></i>Precio (S/)</label>
+            <div class="row g-2">
+              <div class="col-6">
+                <input type="number" class="form-control" placeholder="Mín" [(ngModel)]="precioMin" (input)="filtrarProductos()" />
+              </div>
+              <div class="col-6">
+                <input type="number" class="form-control" placeholder="Máx" [(ngModel)]="precioMax" (input)="filtrarProductos()" />
+              </div>
+            </div>
+          </div>
+          
+          <button class="btn btn-outline-secondary w-100 mt-2" (click)="limpiarFiltros()">
+            <i class="fas fa-eraser me-1"></i>
+            <span class="d-inline d-sm-none">Limpiar</span>
+            <span class="d-none d-sm-inline">Limpiar filtros</span>
+          </button>
         </div>
-        <button class="btn btn-outline-secondary w-100 mt-2" (click)="limpiarFiltros()">
-          <i class="fas fa-eraser"></i> Limpiar filtros
-        </button>
       </div>
     </div>
+    
     <!-- Productos: grilla -->
-    <div class="col-lg-9 col-md-8 col-12">
+    <div class="col-12 col-md-8 col-lg-9">
       <div class="productos-col">
+        <!-- Header con título y búsqueda -->
         <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between mb-4 gap-3">
-          <h2 class="fw-bold text-primary mb-0">Productos disponibles</h2>
-          <input type="text" class="form-control search-input w-100 w-md-auto" style="max-width: 350px;" placeholder="Buscar producto por nombre..." [(ngModel)]="busqueda" (input)="filtrarProductos()">
+          <h2 class="fw-bold text-primary mb-0">
+            <span class="d-none d-sm-inline">Productos disponibles</span>
+            <span class="d-inline d-sm-none">Productos</span>
+          </h2>
+          <div class="search-container position-relative w-100 w-md-auto" style="max-width: 350px;">
+            <i class="fas fa-search position-absolute top-50 start-0 translate-middle-y ms-3 text-muted"></i>
+            <input type="text" class="form-control search-input ps-5" placeholder="Buscar producto..." [(ngModel)]="busqueda" (input)="filtrarProductos()">
+          </div>
         </div>
-        <div class="productos-grid row g-4">
-          <div class="col-12 col-sm-6 col-md-4 col-lg-4" *ngFor="let producto of productosFiltrados">
+        
+        <!-- Grid de productos -->
+        <div class="productos-grid row g-3 g-md-4">
+          <div class="col-6 col-md-6 col-lg-4 col-xl-3" *ngFor="let producto of productosFiltrados">
             <div class="producto-card card h-100 shadow-sm border-0 rounded-4 d-flex flex-column">
               <div class="producto-img position-relative d-flex align-items-center justify-content-center bg-light rounded-4 mt-3">
                 <img [src]="producto.foto || 'https://www.anypsa.com.pe/aplication/webroot/imgs/catalogo/240110124826masterlast-galon-24.jpg'" alt="{{ producto.nombre }}" class="img-fluid product-img-lg" />
                 <span class="badge-categoria position-absolute top-0 start-0 m-2 bg-primary text-white">{{ producto.color }}</span>
                 <span *ngIf="producto.stockTotal === 0" class="badge bg-danger position-absolute top-0 end-0 m-2">Sin stock</span>
               </div>
+              
               <div class="producto-info flex-grow-1 p-3">
                 <h3 class="producto-nombre fw-bold text-dark mb-2">{{ producto.nombre }}</h3>
                 <div class="mb-2"><span class="badge bg-secondary">{{ producto.marca?.nombre }}</span></div>
@@ -72,17 +107,29 @@
                   Stock: <span [ngClass]="{'text-danger': producto.stockTotal === 0, 'text-success': producto.stockTotal > 0}">{{ producto.stockTotal }}</span>
                 </div>
               </div>
+              
               <div class="producto-actions d-flex flex-column gap-2 p-3">
-                <button class="btn btn-outline-primary w-100" (click)="abrirDetalle(producto)"><i class="fas fa-eye me-1"></i> Ver detalle</button>
+                <button class="btn btn-outline-primary w-100" (click)="abrirDetalle(producto)">
+                  <i class="fas fa-eye me-1"></i>
+                  <span class="d-none d-sm-inline">Ver detalle</span>
+                  <span class="d-inline d-sm-none">Detalle</span>
+                </button>
                 <button class="btn btn-success w-100" (click)="agregarAlCarrito(producto)" [disabled]="producto.stockTotal === 0">
-                  <i class="fas fa-cart-plus me-1"></i> Agregar al carrito
+                  <i class="fas fa-cart-plus me-1"></i>
+                  <span class="d-none d-sm-inline">Agregar al carrito</span>
+                  <span class="d-inline d-sm-none">Agregar</span>
                 </button>
               </div>
             </div>
           </div>
-          <div *ngIf="productosFiltrados.length === 0" class="text-center py-5 text-muted fs-5">
-            <i class="fas fa-box-open fa-2x mb-2"></i><br>
-            No se encontraron productos con los filtros seleccionados.
+          
+          <!-- Mensaje cuando no hay productos -->
+          <div *ngIf="productosFiltrados.length === 0" class="col-12">
+            <div class="no-productos text-center py-5 text-muted">
+              <i class="fas fa-box-open fa-2x mb-3 d-block"></i>
+              <h4 class="mb-2">No se encontraron productos</h4>
+              <p class="mb-0">Intenta ajustar los filtros de búsqueda</p>
+            </div>
           </div>
         </div>
       </div>

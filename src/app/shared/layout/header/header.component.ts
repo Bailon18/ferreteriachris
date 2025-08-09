@@ -16,6 +16,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   isAdmin: boolean = false;
   userName: string = '';
   userRole: string = '';
+  mobileMenuOpen: boolean = false;
   private authSubscription!: Subscription;
   private carritoSub!: Subscription;
 
@@ -74,6 +75,14 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   cerrarLoginModal() {
     this.mostrarLoginModal = false;
+  }
+
+  toggleMobileMenu() {
+    this.mobileMenuOpen = !this.mobileMenuOpen;
+  }
+
+  closeMobileMenu() {
+    this.mobileMenuOpen = false;
   }
 
   mostrarAlertaPersonalizada(

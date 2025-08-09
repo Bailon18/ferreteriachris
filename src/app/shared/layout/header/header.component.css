@@ -1,182 +1,521 @@
+/* Header principal */
 .app-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background: linear-gradient(90deg, 
-      #0d47a1 0%,    /* Azul oscuro */
-      #b71c1c 18%,   /* Rojo oscuro */
-      #ff8f00 36%,   /* Amarillo oscuro */
-      #1b5e20 54%,   /* Verde oscuro */
-      #4a148c 72%,   /* Violeta oscuro */
-      #00838f 90%    /* Celeste oscuro */
-    );
-    color: #fff;
-    padding: 0 2rem;
-    height: 72px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-    overflow: hidden;
-    position: relative;
-    z-index: 10;
-  }
-  
-  .app-header::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: rgba(30,30,30,0.18); /* Overlay oscuro */
-    z-index: 0;
-    pointer-events: none;
-  }
-  
-  .app-header > * {
-    position: relative;
-    z-index: 1;
-  }
-  
-  .app-header .logo {
-    display: flex;
-    align-items: center;
-    gap: 0.7rem;
-  }
-  
-  .logo-img {
-    height: 48px;
-    width: auto;
-  }
-  
-  .brand-name {
-    font-size: 2rem;
-    font-weight: bold;
-    letter-spacing: 1px;
-    color: #fff;
-    font-family: 'Roboto', Arial, Helvetica, sans-serif;
-    text-shadow: 2px 2px 8px rgba(30,30,30,0.4), 0 0 2px #1976d2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: linear-gradient(90deg, 
+    #0d47a1 0%,    /* Azul oscuro */
+    #b71c1c 18%,   /* Rojo oscuro */
+    #ff8f00 36%,   /* Amarillo oscuro */
+    #1b5e20 54%,   /* Verde oscuro */
+    #4a148c 72%,   /* Violeta oscuro */
+    #00838f 90%    /* Celeste oscuro */
+  );
+  color: #fff;
+  padding: 0 1rem;
+  height: 72px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  overflow: hidden;
+  position: relative;
+  z-index: 1000;
+  flex-wrap: wrap;
+}
+
+.app-header::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(30,30,30,0.18);
+  z-index: 0;
+  pointer-events: none;
+}
+
+.app-header > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Logo */
+.app-header .logo {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  flex-shrink: 0;
+}
+
+.logo-img {
+  height: 48px;
+  width: auto;
+  flex-shrink: 0;
+}
+
+.brand-name {
+  font-size: 2rem;
+  font-weight: bold;
+  letter-spacing: 1px;
+  color: #fff;
+  font-family: 'Roboto', Arial, Helvetica, sans-serif;
+  text-shadow: 2px 2px 8px rgba(30,30,30,0.4), 0 0 2px #1976d2;
+  white-space: nowrap;
+}
+
+/* Botón hamburguesa */
+.hamburger-btn {
+  display: none;
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 4px;
+  transition: background 0.2s;
+  z-index: 1001;
+}
+
+.hamburger-btn:hover {
+  background: rgba(255,255,255,0.1);
+}
+
+/* Navegación */
+.app-header .nav-links {
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+  flex: 1;
+  justify-content: center;
+}
+
+.app-header .nav-links a {
+  color: #fff;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 1.15rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: color 0.2s, background 0.2s;
+  padding: 0.3rem 0.7rem;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+
+.app-header .nav-links a.active,
+.app-header .nav-links a:hover {
+  color: #0d47a1;
+  background: rgba(255,255,255,0.18);
+  font-weight: 700;
+}
+
+.nav-text {
+  display: inline;
+}
+
+/* Carrito */
+.carrito-link {
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding-right: 0.7rem;
+}
+
+.carrito-badge {
+  position: absolute;
+  top: -7px;
+  right: 0px;
+  background: linear-gradient(135deg, #ff5252 60%, #ff1744 100%);
+  color: #fff;
+  font-size: 0.85rem;
+  font-weight: 700;
+  border-radius: 50%;
+  padding: 0 7px;
+  min-width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(255,82,82,0.18);
+  border: 2px solid #fff;
+  z-index: 2;
+  transition: background 0.2s, transform 0.18s;
+  animation: badge-pop 0.25s;
+}
+
+@keyframes badge-pop {
+  0% { transform: scale(0.7);}
+  70% { transform: scale(1.15);}
+  100% { transform: scale(1);}
+}
+
+/* Acciones de autenticación */
+.app-header .auth-actions {
+  display: flex;
+  gap: 0.7rem;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.app-header .login-btn,
+.app-header .register-btn {
+  background: #fff;
+  color: #1976d2;
+  border: none;
+  border-radius: 4px;
+  padding: 0.5rem 1.2rem;
+  font-weight: 700;
+  cursor: pointer;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+  box-shadow: 0 1px 4px rgba(30,30,30,0.07);
+  white-space: nowrap;
+}
+
+.app-header .login-btn:hover,
+.app-header .register-btn:hover {
+  background: #0d47a1;
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(13,71,161,0.15);
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #fff;
+  font-weight: 500;
+  margin-right: 1rem;
+}
+
+.user-name {
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.user-role {
+  opacity: 0.8;
+  white-space: nowrap;
+}
+
+.logout-btn {
+  background: #fff;
+  color: #d32f2f;
+  border: none;
+  border-radius: 4px;
+  padding: 0.5rem 1.2rem;
+  font-weight: 700;
+  cursor: pointer;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+  box-shadow: 0 1px 4px rgba(30,30,30,0.07);
+  white-space: nowrap;
+}
+
+.logout-btn:hover {
+  background: #d32f2f;
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(211,47,47,0.15);
+}
+
+/* Overlay móvil */
+.mobile-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+  z-index: 999;
+}
+
+/* Media queries para responsive */
+@media (max-width: 1199px) {
+  .app-header {
+    padding: 0 0.8rem;
   }
   
   .app-header .nav-links {
-    display: flex;
-    gap: 2rem;
+    gap: 1.5rem;
   }
   
   .app-header .nav-links a {
-    color: #fff;
-    text-decoration: none;
-    font-weight: 500;
-    font-size: 1.15rem;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    transition: color 0.2s, background 0.2s;
-    padding: 0.3rem 0.7rem;
-    border-radius: 4px;
+    font-size: 1.1rem;
+    padding: 0.25rem 0.6rem;
   }
   
-  .app-header .nav-links a.active,
-  .app-header .nav-links a:hover {
-    color: #0d47a1;
-    background: rgba(255,255,255,0.18);
-    font-weight: 700;
+  .brand-name {
+    font-size: 1.8rem;
+  }
+}
+
+@media (max-width: 991px) {
+  .app-header {
+    padding: 0 0.6rem;
+    height: 68px;
   }
   
-  .app-header .auth-actions {
-    display: flex;
-    gap: 0.7rem;
+  .app-header .nav-links {
+    gap: 1.2rem;
+  }
+  
+  .app-header .nav-links a {
+    font-size: 1rem;
+    padding: 0.2rem 0.5rem;
+  }
+  
+  .brand-name {
+    font-size: 1.6rem;
+  }
+  
+  .logo-img {
+    height: 44px;
   }
   
   .app-header .login-btn,
-  .app-header .register-btn {
-    background: #fff;
-    color: #1976d2;
-    border: none;
-    border-radius: 4px;
-    padding: 0.5rem 1.2rem;
-    font-weight: 700;
-    cursor: pointer;
-    font-size: 1rem;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    transition: background 0.2s, color 0.2s, box-shadow 0.2s;
-    box-shadow: 0 1px 4px rgba(30,30,30,0.07);
+  .app-header .logout-btn {
+    padding: 0.4rem 1rem;
+    font-size: 0.95rem;
+  }
+}
+
+@media (max-width: 767px) {
+  .app-header {
+    padding: 0 0.5rem;
+    height: 64px;
+    position: relative;
   }
   
-  .app-header .login-btn:hover,
-  .app-header .register-btn:hover {
-    background: #0d47a1;
-    color: #fff;
-    box-shadow: 0 2px 8px rgba(13,71,161,0.15);
+  /* Mostrar botón hamburguesa */
+  .hamburger-btn {
+    display: block;
+    order: 3;
   }
+  
+  /* Ocultar navegación normal */
+  .app-header .nav-links {
+    position: fixed;
+    top: 64px;
+    left: -100%;
+    width: 280px;
+    height: calc(100vh - 64px);
+    background: linear-gradient(135deg, #0d47a1 0%, #1976d2 100%);
+    flex-direction: column;
+    gap: 0;
+    padding: 2rem 0;
+    transition: left 0.3s ease;
+    z-index: 1000;
+    box-shadow: 4px 0 20px rgba(0,0,0,0.2);
+    overflow-y: auto;
+  }
+  
+  .app-header .nav-links.mobile-open {
+    left: 0;
+  }
+  
+  .app-header .nav-links a {
+    width: 100%;
+    padding: 1rem 2rem;
+    font-size: 1.1rem;
+    border-radius: 0;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    justify-content: flex-start;
+  }
+  
+  .app-header .nav-links a:hover,
+  .app-header .nav-links a.active {
+    background: rgba(255,255,255,0.15);
+    color: #fff;
+  }
+  
+  .brand-name {
+    font-size: 1.4rem;
+  }
+  
+  .logo-img {
+    height: 40px;
+  }
+  
+  .app-header .auth-actions {
+    order: 2;
+    gap: 0.5rem;
+  }
+  
+  .app-header .login-btn,
+  .app-header .logout-btn {
+    padding: 0.35rem 0.8rem;
+    font-size: 0.9rem;
+  }
+  
+  .user-info {
+    margin-right: 0.5rem;
+  }
+  
+  .user-role {
+    display: none;
+  }
+}
 
-  .carrito-link {
-    position: relative;
-    display: flex;
-    align-items: center;
-    padding-right: 0.7rem; /* Espacio para el badge */
+@media (max-width: 575px) {
+  .app-header {
+    padding: 0 0.4rem;
+    height: 60px;
+  }
+  
+  .app-header .nav-links {
+    top: 60px;
+    width: 260px;
+    height: calc(100vh - 60px);
+    padding: 1.5rem 0;
+  }
+  
+  .app-header .nav-links a {
+    padding: 0.8rem 1.5rem;
+    font-size: 1rem;
+  }
+  
+  .brand-name {
+    font-size: 1.2rem;
+  }
+  
+  .logo-img {
+    height: 36px;
+  }
+  
+  .app-header .login-btn,
+  .app-header .logout-btn {
+    padding: 0.3rem 0.7rem;
+    font-size: 0.85rem;
+  }
+  
+  .hamburger-btn {
+    font-size: 1.3rem;
+    padding: 0.4rem;
   }
   
   .carrito-badge {
-    position: absolute;
-    top: -7px;
-    right: 0px;
-    background: linear-gradient(135deg, #ff5252 60%, #ff1744 100%);
-    color: #fff;
-    font-size: 0.85rem;
-    font-weight: 700;
-    border-radius: 50%;
-    padding: 0 7px;
-    min-width: 20px;
-    height: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 2px 8px rgba(255,82,82,0.18);
-    border: 2px solid #fff;
-    z-index: 2;
-    transition: background 0.2s, transform 0.18s;
-    animation: badge-pop 0.25s;
+    min-width: 18px;
+    height: 18px;
+    font-size: 0.8rem;
+    top: -6px;
+    right: -2px;
   }
+}
 
-  @keyframes badge-pop {
-    0% { transform: scale(0.7);}
-    70% { transform: scale(1.15);}
-    100% { transform: scale(1);}
+@media (max-width: 375px) {
+  .app-header {
+    padding: 0 0.3rem;
+    height: 56px;
   }
+  
+  .app-header .nav-links {
+    top: 56px;
+    width: 240px;
+    height: calc(100vh - 56px);
+    padding: 1rem 0;
+  }
+  
+  .app-header .nav-links a {
+    padding: 0.7rem 1.2rem;
+    font-size: 0.95rem;
+  }
+  
+  .brand-name {
+    font-size: 1.1rem;
+  }
+  
+  .logo-img {
+    height: 32px;
+  }
+  
+  .app-header .login-btn,
+  .app-header .logout-btn {
+    padding: 0.25rem 0.6rem;
+    font-size: 0.8rem;
+  }
+  
+  .hamburger-btn {
+    font-size: 1.2rem;
+    padding: 0.3rem;
+  }
+  
+  .carrito-badge {
+    min-width: 16px;
+    height: 16px;
+    font-size: 0.75rem;
+    top: -5px;
+    right: -1px;
+  }
+}
 
-  .user-info {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    color: #fff;
-    font-weight: 500;
-    margin-right: 1rem;
+/* Orientación landscape en móviles */
+@media (max-width: 767px) and (orientation: landscape) {
+  .app-header .nav-links {
+    height: calc(100vh - 64px);
+    padding: 1rem 0;
   }
+  
+  .app-header .nav-links a {
+    padding: 0.6rem 2rem;
+  }
+}
 
-  .user-name {
-    font-weight: 600;
+/* Pantallas de alta densidad */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  .app-header {
+    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
   }
+  
+  .carrito-badge {
+    border-width: 1px;
+  }
+}
 
-  .user-role {
-    opacity: 0.8;
+/* Mejoras para dispositivos táctiles */
+@media (hover: none) and (pointer: coarse) {
+  .app-header .nav-links a {
+    min-height: 44px;
   }
+  
+  .app-header .login-btn,
+  .app-header .logout-btn {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  .hamburger-btn {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  .carrito-link {
+    min-height: 44px;
+  }
+}
 
-  .logout-btn {
-    background: #fff;
-    color: #d32f2f;
-    border: none;
-    border-radius: 4px;
-    padding: 0.5rem 1.2rem;
-    font-weight: 700;
-    cursor: pointer;
-    font-size: 1rem;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    transition: background 0.2s, color 0.2s, box-shadow 0.2s;
-    box-shadow: 0 1px 4px rgba(30,30,30,0.07);
-  }
+/* Animaciones para el menú móvil */
+.app-header .nav-links {
+  transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
 
-  .logout-btn:hover {
-    background: #d32f2f;
-    color: #fff;
-    box-shadow: 0 2px 8px rgba(211,47,47,0.15);
-  }
+/* Scrollbar personalizado para navegación móvil */
+.app-header .nav-links::-webkit-scrollbar {
+  width: 6px;
+}
+
+.app-header .nav-links::-webkit-scrollbar-track {
+  background: rgba(255,255,255,0.1);
+}
+
+.app-header .nav-links::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.3);
+  border-radius: 3px;
+}
+
+.app-header .nav-links::-webkit-scrollbar-thumb:hover {
+  background: rgba(255,255,255,0.5);
+}
