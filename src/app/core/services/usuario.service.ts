@@ -67,4 +67,8 @@ export class UsuarioService {
     return this.http.get<any[]>(`${baseUrl}/api/user/vendedores`);
   }
 
+  getUsuariosAll(): Observable<any[]> {
+    return this.http.get<any[]>(`${baseUrl}/api/user/all`);
+  }
+
 } 

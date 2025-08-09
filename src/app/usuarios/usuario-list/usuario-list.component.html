@@ -41,7 +41,13 @@
                 (click)="limpiarFiltros()">
           <i class="fas fa-eraser"></i> Limpiar Filtros
         </button>
-        <button class="btn btn-success" (click)="abrirModalNuevoUsuario()">
+        <button class="btn btn-danger me-2" (click)="exportarPDF()">
+          <i class="fas fa-file-pdf"></i> PDF
+        </button>
+        <button class="btn btn-success me-2" (click)="exportarExcel()">
+          <i class="fas fa-file-excel"></i> Excel
+        </button>
+        <button class="btn btn-primary" (click)="abrirModalNuevoUsuario()">
           <i class="fas fa-user-plus"></i> Nuevo Usuario
         </button>
       </div>

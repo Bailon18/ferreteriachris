@@ -1,6 +1,16 @@
 <div class="pedido-list-container">
   <h3 class="mb-4">Gestión de Pedidos</h3>
 
+  <!-- Botones de exportación -->
+  <div class="mb-3 text-end">
+    <button class="btn btn-danger me-2" (click)="exportarPDF()">
+      <i class="fas fa-file-pdf"></i> Exportar PDF
+    </button>
+    <button class="btn btn-success" (click)="exportarExcel()">
+      <i class="fas fa-file-excel"></i> Exportar Excel
+    </button>
+  </div>
+
   <!-- Filtros modernos -->
   <div class="pedido-filters-card mb-4">
     <div class="row g-3 align-items-end">
@@ -26,18 +36,38 @@
         </div>
       </div>
       <div class="col-md-7 col-12">
-        <div class="row g-2 align-items-end">
+        <div class="row g-2">
           <div class="col-auto">
             <label class="form-label mb-1">Fecha inicio</label>
-            <input type="date" class="form-control" [(ngModel)]="fechaInicio">
+            <input type="date" 
+                   class="form-control" 
+                   [(ngModel)]="fechaInicio"
+                   (change)="onFechaChange()">
           </div>
           <div class="col-auto">
             <label class="form-label mb-1">Fecha fin</label>
-            <input type="date" class="form-control" [(ngModel)]="fechaFin">
+            <input type="date" 
+                   class="form-control" 
+                   [(ngModel)]="fechaFin"
+                   (change)="onFechaChange()">
           </div>
-          <div class="col-auto d-flex gap-2">
-            <button class="btn btn-primary" (click)="onFiltrarPorFecha()" [disabled]="!fechaInicio || !fechaFin">Filtrar</button>
-            <button class="btn btn-outline-secondary" (click)="limpiarFiltroFecha()" [disabled]="!fechaInicio && !fechaFin">Limpiar</button>
+          <div class="col-auto d-flex align-items-end gap-2">
+            <button class="btn btn-primary" 
+                    (click)="onFiltrarPorFecha()" 
+                    [disabled]="!fechaInicio || !fechaFin || !fechasValidas">
+              Filtrar
+            </button>
+            <button class="btn btn-outline-secondary" 
+                    (click)="limpiarFiltroFecha()" 
+                    [disabled]="!fechaInicio && !fechaFin">
+              Limpiar
+            </button>
+          </div>
+          <div class="col-12" *ngIf="!fechasValidas">
+            <div class="alert alert-danger py-2 mb-0">
+              <i class="fas fa-exclamation-triangle me-2"></i>
+              {{ mensajeErrorFechas }}
+            </div>
           </div>
         </div>
       </div>

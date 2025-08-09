@@ -79,5 +79,20 @@ export class PedidoService {
     return this.http.get<any>(`${baseUrl}/api/pedidos/filtro?${params.join('&')}`);
   }
 
+  // Método para exportar pedidos (sin paginación)
+  exportarPedidos(
+    estado: string | null,
+    vendedorId: number | null,
+    fechaInicio: string | null,
+    fechaFin: string | null
+  ): Observable<any[]> {
+    let params = [];
+    if (estado) params.push(`estado=${estado}`);
+    if (vendedorId) params.push(`vendedorId=${vendedorId}`);
+    if (fechaInicio) params.push(`inicio=${fechaInicio}`);
+    if (fechaFin) params.push(`fin=${fechaFin}`);
+    return this.http.get<any[]>(`${baseUrl}/api/pedidos/export?${params.join('&')}`);
+  }
+
 
 }

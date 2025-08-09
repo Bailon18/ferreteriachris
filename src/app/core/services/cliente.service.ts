@@ -40,4 +40,14 @@ export class ClienteService {
     const body = { username: loginUser.correo, password: loginUser.password };
     return this.http.post(`${baseUrl}/api/clientes/login`, body);
   }
+
+  // total de clientes
+  getTotalClientes(): Observable<number> {
+    return this.http.get<number>(`${baseUrl}/api/clientes/all`);
+  }
+
+  // Obtener todos los clientes sin paginación
+  getClientesAll(): Observable<any[]> {
+    return this.http.get<any[]>(`${baseUrl}/api/clientes/list`);
+  }
 } 

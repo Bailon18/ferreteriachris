@@ -13,6 +13,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   carritoCantidad: number = 0;
   mostrarLoginModal: boolean = false;
   isLoggedIn: boolean = false;
+  isAdmin: boolean = false;
   userName: string = '';
   userRole: string = '';
   private authSubscription!: Subscription;
@@ -47,11 +48,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
       this.userName = userName || '';
       const authorities = this.tokenService.getAuthorities();
       this.userRole = authorities.length > 0 ? authorities[0] : '';
-
-      
+      this.isAdmin = this.tokenService.isAdmin2();
     } else {
       this.userName = '';
       this.userRole = '';
+      this.isAdmin = false;
     }
   }
 

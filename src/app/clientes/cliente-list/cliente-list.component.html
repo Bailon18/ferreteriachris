@@ -1,6 +1,16 @@
 <div class="usuario-list-layout">
   <h3 class="mb-4">Listado de Clientes</h3>
   
+  <!-- Botones de exportación -->
+  <div class="mb-3 text-end">
+    <button class="btn btn-danger me-2" (click)="exportarPDF()">
+      <i class="fas fa-file-pdf"></i> PDF
+    </button>
+    <button class="btn btn-success me-2" (click)="exportarExcel()">
+      <i class="fas fa-file-excel"></i> Excel
+    </button>
+  </div>
+  
   <!-- Tabla de clientes -->
   <div class="usuario-table-wrapper">
     <table class="table table-bordered table-hover usuario-table w-100">
