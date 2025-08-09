@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class HuggingFaceService {
-  private apiUrl = 'http://localhost:8080/api/chatbot';
+  private apiUrl = 'https://ferreteria-app-production.up.railway.app/api/chatbot';
   private isFirstMessage = true;
 
   constructor(private http: HttpClient) {}
